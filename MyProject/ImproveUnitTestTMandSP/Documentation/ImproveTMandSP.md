@@ -1,0 +1,1 @@
+Spartial Pooler and Temporal Memory
