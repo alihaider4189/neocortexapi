@@ -35,7 +35,9 @@ Learning OutCome:
                 becomes active, it forms connections to other cells that were active just prior. Cells can then predict when they will become active
                 by looking at their connections. If all the cells do this, collectively they can store and recall sequences, and they can predict what
                 is likely to happen next.
-        3. 
+
+
+       
         4.
         5	SpatialPooler.md - NeoCortexAPI Documentation from project
 				Learning OutCome:
