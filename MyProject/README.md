@@ -37,7 +37,8 @@ Learning OutCome:
                 is likely to happen next.
 
 
-        	SpatialPooler.md - NeoCortexAPI Documentation from project
+            
+		    SpatialPooler.md - NeoCortexAPI Documentation from project
 				Learning OutCome:
 					Currently the project supports three versions of SP are implemented and considered:
 					Spatial Pooler - single threaded original version without algorithm specific changes.
