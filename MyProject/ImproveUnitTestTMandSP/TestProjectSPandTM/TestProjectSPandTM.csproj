@@ -34,12 +34,6 @@
     <ProjectReference Include="..\NeoCortexUtils\NeoCortexUtils.csproj" />
   </ItemGroup>
 	
-   <ItemGroup>
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-		<_Parameter1>TestProjectSPandTM</_Parameter1>
-		</AssemblyAttribute>
-   </ItemGroup>
-	
   <ItemGroup>
     <Compile Update="MockSpoolers.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
