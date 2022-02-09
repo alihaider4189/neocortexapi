@@ -45,4 +45,4 @@ Learning OutCome:
 					SYN_PERM_ACTIVE_INC:	Increment step of connected synapse during learning process
 					SYN_PERM_CONNECTED:	Defines Connected Permanence Threshold  , which is a float value, which must be exceeded to declare synapse as connected.
 					DUTY_CYCLE_PERIOD:	Number of iterations. The period used to calculate duty cycles. Higher values make it take longer to respond to changes in boost. Shorter values make it more unstable and likely to oscillate.
-					MAX_BOOST:	Maximum boost factor of a column.
+					.

@@ -10,10 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UnitTestsProject
+namespace  UnitTestsProject
 {
     [TestClass]
-    public class SpatialPoolerTest
+     public class SpatialPoolerTest
     {
         private Parameters parameters;
         private SpatialPooler sp;
