@@ -1,4 +1,4 @@
-Learning OutCome: 
+﻿Learning OutCome: 
         1. The Main Idea is to understand the basic of Artificial General Intelligence we need to decrypt the intelligence of NeoCortex
         Reverse Engineering of Neocortex consists of the following steps
             1.Sparse Distributed Representation
@@ -7,7 +7,7 @@ Learning OutCome:
             4.Temporal Memory
 
         2. HTM starts with the assumption that everything the neocortex does is based on memory and recall of sequences of patterns
-                 �Hierarchical temporal memory (HTM) is a machine
+                 —Hierarchical temporal memory (HTM) is a machine
                  learning algorithm inspired by the information processing mechanisms of the human neocortex and consists of a spatial pooler
                     (SP) and temporal memory (TM).
 
@@ -59,4 +59,19 @@ Learning OutCome:
 					SYN_PERM_ACTIVE_INC:	Increment step of connected synapse during learning process
 					SYN_PERM_CONNECTED:	Defines Connected Permanence Threshold  , which is a float value, which must be exceeded to declare synapse as connected.
 					DUTY_CYCLE_PERIOD:	Number of iterations. The period used to calculate duty cycles. Higher values make it take longer to respond to changes in boost. Shorter values make it more unstable and likely to oscillate.
-					.
+					
+				TemporalMemory.md - NeoCortex Document folder
+
+				
+					 CELLS_PER_COLUMN            | Number of cells per columns in the SDR                                                                                                                                   |
+					 ACTIVATION_THRESHOLD        | The activation threshold of a segment. If the number of active connected synapses on a distal segment is at least this threshold, the segment is declared as active one. |
+					 LEARNING_RADIUS             | Radius around cell from which it can sample to form distal connections.                                                                                                  |
+					 MIN_THRESHOLD               | If the number of synapses active on a segment is at least this threshold, it is selected as the best matching cell in a bursting column.                                 |
+					 MAX_NEW_SYNAPSE_COUNT       | The maximum number of synapses added to a segment during learning.                                                                                                       |
+					 MAX_SYNAPSES_PER_SEGMENT    | The maximum number of synapses that can be added to a segment.                                                                                                           |
+					 MAX_SEGMENTS_PER_CELL       | The maximum number of Segments a Cell can have.                                                                                                                          |
+					 INITIAL_PERMANENCE          | Initial permanence value for a synapse.                                                                                                                                  |
+					 CONNECTED_PERMANENCE        | If the permanence value for a synapse is ≥ this value, it is “connected”.                                                                                                |
+					 PERMANENCE_INCREMENT        | If a segment correctly predicted a cell’s activity, the permanence values of its active synapses are incremented by this amount.                                         |
+					 PERMANENCE_DECREMENT        | If a segment correctly predicted a cell’s activity, the permanence values of its inactive synapses are decremented by this amount.                                       |
+					 PREDICTED_SEGMENT_DECREMENT | If a segment incorrectly predicted a cell’s activity, the permanence values of its active synapses are decremented by this amount.                                       |
