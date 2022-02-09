@@ -46,7 +46,7 @@ namespace UnitTestsProject
         {
             HtmConfig htmConfig = new HtmConfig(new int[] { 32 }, new int[] { 32 })
             {
-                CellsPerColumn = 4,
+                CellsPerColumn =  4,
                 ActivationThreshold = 3,
                 InitialPermanence = 0.21,
                 ConnectedPermanence = 0.5,
