@@ -9,7 +9,13 @@ Learning OutCome:
         2. HTM starts with the assumption that everything the neocortex does is based on memory and recall of sequences of patterns
                  —Hierarchical temporal memory (HTM) is a machine
                  learning algorithm inspired by the information processing mechanisms of the human neocortex and consists of a spatial pooler
-                    (SP) and temporal memory (TM)
+                    (SP) and temporal memory (TM).
+
+         The HTM network is a level hierarchy in the shape of a tree. These levels are made up of smaller components known as regions (or nodes).
+		 Several regions may be contained within a single level of the hierarchy. There are usually fewer areas at higher levels of the system.
+		 Higher levels of the hierarchy can combine patterns learnt at previous levels to memorize more complicated patterns.
+
+
 
            Spatial Pooling:
 
@@ -17,14 +23,22 @@ Learning OutCome:
 	             Assume that for a given input space, a spatial pooling attempts to learn the sequences, 
                  and that in order to learn the sequence, each micro column is linked to a particular number of synapses from the input. 
 
+				 Spatial pooler is a fundamental component in Hierarchical Temporal Memory, mainly responsible for processing feedforward
+				 sensory inputs into sparse distributed representations, and feature extraction in Hierarchical Temporal Memory (HTM) also.
+
                    
             Temporal Pooling:
 		        We can grasp the sequential pattern throughout time thanks to Temporal Pooling. 
                 It learns the current column's sequences from the Spatial Pooler and guesses what spatial pattern will appear next depending on the temporal context of each input.
 		
-        3. 
-        4.
-        5	SpatialPooler.md - NeoCortexAPI Documentation from project
+				The Temporal Memory algorithm learns sequences and makes predictions. In the Temporal Memory algorithm, when a cell
+                becomes active, it forms connections to other cells that were active just prior. Cells can then predict when they will become active
+                by looking at their connections. If all the cells do this, collectively they can store and recall sequences, and they can predict what
+                is likely to happen next.
+
+
+            
+		    SpatialPooler.md - NeoCortexAPI Documentation from project
 				Learning OutCome:
 					Currently the project supports three versions of SP are implemented and considered:
 					Spatial Pooler - single threaded original version without algorithm specific changes.
