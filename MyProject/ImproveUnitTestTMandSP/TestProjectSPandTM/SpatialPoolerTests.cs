@@ -153,6 +153,39 @@ namespace UnitTestsProject
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
         [TestCategory("InitHtmConfig")]
+        // Unit Test confirmSPConstruction2 added by me
+        public void confirmSPConstruction2()
+        {
+            setupParameters();
+
+            InitTestSPInstance();
+
+            Assert.AreEqual(6, mem.HtmConfig.InputDimensions[0]);
+            Assert.AreEqual(6, mem.HtmConfig.ColumnDimensions[0]);
+            Assert.AreEqual(6, mem.HtmConfig.PotentialRadius);
+            Assert.AreEqual(0.6, mem.HtmConfig.PotentialPct);//, 0);
+            Assert.AreEqual(false, mem.HtmConfig.GlobalInhibition);
+            Assert.AreEqual(-1.0, mem.HtmConfig.LocalAreaDensity);//, 0);
+            Assert.AreEqual(3, mem.HtmConfig.NumActiveColumnsPerInhArea);//, 0);
+            Assert.IsTrue(Math.Abs(1 - mem.HtmConfig.StimulusThreshold) <= 1);
+            Assert.AreEqual(0.01, mem.HtmConfig.SynPermInactiveDec);//, 0);
+            Assert.AreEqual(0.1, mem.HtmConfig.SynPermActiveInc);//, 0);
+            Assert.AreEqual(0.1, mem.HtmConfig.SynPermConnected);//, 0);
+            Assert.AreEqual(0.1, mem.HtmConfig.MinPctOverlapDutyCycles);//, 0);
+            Assert.AreEqual(0.1, mem.HtmConfig.MinPctActiveDutyCycles);//, 0);
+            Assert.AreEqual(10, mem.HtmConfig.DutyCyclePeriod);//, 0);
+            Assert.AreEqual(10.0, mem.HtmConfig.MaxBoost);//, 0);
+            Assert.AreEqual(42, mem.HtmConfig.RandomGenSeed);
+
+            Assert.AreEqual(6, mem.HtmConfig.NumInputs);
+            Assert.AreEqual(6, mem.HtmConfig.NumColumns);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [TestCategory("Prod")]
+        [TestCategory("InitHtmConfig")]
+
         public void confirmSPConstruction1()
         {
             HtmConfig htmConfig = SetupHtmConfigParameters();
