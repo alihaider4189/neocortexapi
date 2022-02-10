@@ -22,8 +22,8 @@ namespace UnitTestsProject
         public void setupParameters()
         {
             parameters = Parameters.getAllDefaultParameters();
-            parameters.Set(KEY.INPUT_DIMENSIONS, new int[] { 5 });
-            parameters.Set(KEY.COLUMN_DIMENSIONS, new int[] { 5 });
+            parameters.Set(KEY.INPUT_DIMENSIONS, new int[] { 6 });
+            parameters.Set(KEY.COLUMN_DIMENSIONS, new int[] { 6 });
             parameters.Set(KEY.POTENTIAL_RADIUS, 5);
             parameters.Set(KEY.POTENTIAL_PCT, 0.5);
             parameters.Set(KEY.GLOBAL_INHIBITION, false);
@@ -121,6 +121,7 @@ namespace UnitTestsProject
         [TestMethod]
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
+        
         public void confirmSPConstruction()
         {
             setupParameters();
