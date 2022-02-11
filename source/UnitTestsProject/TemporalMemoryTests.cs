@@ -263,7 +263,7 @@ namespace UnitTestsProject
         public void TestReinforcedSelectedMatchingSegmentInBurstingColumn()
         {
             TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
+            Connections  cn = new Connections();
             Parameters p = getDefaultParameters(null, KEY.PERMANENCE_DECREMENT, 0.08);
             p.apply(cn);
             tm.Init(cn);
