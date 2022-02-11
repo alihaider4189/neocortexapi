@@ -640,7 +640,7 @@ namespace UnitTestsProject
             int[] activeColumns = { 2 };
             Cell expectedActiveCell = cn.GetCell(5);
 
-            DistalDendrite activeSegment = cn.CreateDistalSegment(expectedActiveCell);
+            DistalDendrite  activeSegment = cn.CreateDistalSegment(expectedActiveCell);
             cn.CreateSynapse(activeSegment, previousActiveCells[0], 0.5);
             cn.CreateSynapse(activeSegment, previousActiveCells[1], 0.5);
             cn.CreateSynapse(activeSegment, previousActiveCells[2], 0.5);
