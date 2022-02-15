@@ -193,7 +193,7 @@ namespace UnitTestsProject
             Assert.IsTrue(cc2.WinnerCells.Count == 0);
             Assert.IsTrue(cc2.PredictiveCells.Count == 0);
         }
-        //Created a new test by Ali Haider
+        //created a new test by ali haider
 
         [TestMethod]
         [TestCategory("Prod")]
@@ -204,7 +204,7 @@ namespace UnitTestsProject
             Parameters p = getDefaultParameters();
             p.apply(cn);
             tm.Init(cn);
-
+            
             int[] previousActiveColumns = { 0 };
             Cell cell5 = cn.GetCell(5);
 
@@ -257,7 +257,7 @@ namespace UnitTestsProject
 
             Assert.IsTrue(cc.WinnerCells.SequenceEqual(new LinkedHashSet<Cell>(expectedWinnerCells)));
         }
-
+         
 
         [TestMethod]
         public void TestReinforcedCorrectlyActiveSegments()
