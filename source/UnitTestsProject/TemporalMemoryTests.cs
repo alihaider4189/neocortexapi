@@ -134,7 +134,7 @@ namespace UnitTestsProject
             Connections cn = new Connections();
             Parameters p = getDefaultParameters();
             p.apply(cn);
-            tm.Init(cn);
+            tm.Init(cn); 
 
             int[] activeColumns = { 0 };
             IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
@@ -193,6 +193,39 @@ namespace UnitTestsProject
             Assert.IsTrue(cc2.WinnerCells.Count == 0);
             Assert.IsTrue(cc2.PredictiveCells.Count == 0);
         }
+        //created a new test by ali haider
+
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestZeroActiveColumns1()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = getDefaultParameters();
+            p.apply(cn);
+            tm.Init(cn);
+            
+            int[] previousActiveColumns = { 0 };
+            Cell cell5 = cn.GetCell(5);
+
+            DistalDendrite activeSegment = cn.CreateDistalSegment(cell5);
+            cn.CreateSynapse(activeSegment, cn.GetCell(0), 0.7);
+            cn.CreateSynapse(activeSegment, cn.GetCell(1), 0.7);
+            cn.CreateSynapse(activeSegment, cn.GetCell(2), 0.7);
+            cn.CreateSynapse(activeSegment, cn.GetCell(3), 0.7);
+            cn.CreateSynapse(activeSegment, cn.GetCell(4), 0.7);
+
+            ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
+            Assert.IsFalse(cc.ActiveCells.Count == 0);
+            Assert.IsFalse(cc.WinnerCells.Count == 0);
+            Assert.IsFalse(cc.PredictiveCells.Count == 0);
+
+            int[] zeroColumns = new int[0];
+            ComputeCycle cc2 = tm.Compute(zeroColumns, true) as ComputeCycle;
+            Assert.IsTrue(cc2.ActiveCells.Count == 0);
+            Assert.IsTrue(cc2.WinnerCells.Count == 0);
+            Assert.IsTrue(cc2.PredictiveCells.Count == 0);
+        }
 
         [TestMethod]
         [TestCategory("Prod")]
@@ -224,7 +257,7 @@ namespace UnitTestsProject
 
             Assert.IsTrue(cc.WinnerCells.SequenceEqual(new LinkedHashSet<Cell>(expectedWinnerCells)));
         }
-
+         
 
         [TestMethod]
         public void TestReinforcedCorrectlyActiveSegments()
