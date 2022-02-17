@@ -257,7 +257,7 @@ namespace UnitTestsProject
 
             Assert.IsTrue(cc.WinnerCells.SequenceEqual(new LinkedHashSet<Cell>(expectedWinnerCells)));
         }
-         
+
 
         [TestMethod]
         public void TestReinforcedCorrectlyActiveSegments()
@@ -289,7 +289,7 @@ namespace UnitTestsProject
             Assert.AreEqual(0.6, as2.Permanence, 0.1);
             Assert.AreEqual(0.6, as3.Permanence, 0.1);
             Assert.AreEqual(0.42, is1.Permanence, 0.001);
-        ]
+        }
    
     [TestMethod]
         [TestCategory("Prod")]
@@ -328,6 +328,7 @@ namespace UnitTestsProject
 
         [TestMethod]
         [TestCategory("Prod")]
+
         public void TestNoChangeToNonSelectedMatchingSegmentsInBurstingColumn()
         {
             TemporalMemory tm = new TemporalMemory();
