@@ -285,40 +285,12 @@ namespace UnitTestsProject
             tm.Compute(previousActiveColumns, true);
             tm.Compute(activeColumns, true);
 
-            Assert.AreEqual(0.6, as1.Permanence, 0.1);
+            Assert.AreEqual(0.7, as1.Permanence, 0.1);
             Assert.AreEqual(0.6, as2.Permanence, 0.1);
             Assert.AreEqual(0.6, as3.Permanence, 0.1);
             Assert.AreEqual(0.42, is1.Permanence, 0.001);
-        }
-        TemporalMemory tm = new TemporalMemory();
-        Connections cn = new Connections();
-        Parameters p = getDefaultParameters(null, KEY.INITIAL_PERMANENCE, 0.2);
-        p = getDefaultParameters(p, KEY.MAX_NEW_SYNAPSE_COUNT, 4);
-        p = getDefaultParameters(p, KEY.PERMANENCE_DECREMENT, 0.08);
-        p = getDefaultParameters(p, KEY.PREDICTED_SEGMENT_DECREMENT, 0.02);
-        p.apply(cn);
-            tm.Init(cn);
-
-            int[] previousActiveColumns = { 0 };
-        int[] activeColumns = { 1 };
-        Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) };
-        Cell activeCell = cn.GetCell(5);
-
-        DistalDendrite activeSegment = cn.CreateDistalSegment(activeCell);
-        Synapse as1 = cn.CreateSynapse(activeSegment, previousActiveCells[0], 0.5);
-        Synapse as2 = cn.CreateSynapse(activeSegment, previousActiveCells[1], 0.5);
-        Synapse as3 = cn.CreateSynapse(activeSegment, previousActiveCells[2], 0.5);
-        Synapse is1 = cn.CreateSynapse(activeSegment, cn.GetCell(81), 0.5);
-
-        tm.Compute(previousActiveColumns, true);
-            tm.Compute(activeColumns, true);
-
-            Assert.AreEqual(0.6, as1.Permanence, 0.1);
-            Assert.AreEqual(0.6, as2.Permanence, 0.1);
-            Assert.AreEqual(0.6, as3.Permanence, 0.1);
-            Assert.AreEqual(0.42, is1.Permanence, 0.001);
-        }
-
+        ]
+   
     [TestMethod]
         [TestCategory("Prod")]
         public void TestReinforcedSelectedMatchingSegmentInBurstingColumn()
