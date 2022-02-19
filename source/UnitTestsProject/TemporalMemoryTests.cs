@@ -415,7 +415,7 @@ namespace UnitTestsProject
 
             int[] zeroColumns = { };
             int[] activeColumns = { 0 };
-
+             
             tm.Compute(zeroColumns, true);
             tm.Compute(activeColumns, true);
 
