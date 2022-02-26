@@ -459,7 +459,7 @@ namespace UnitTestsProject
             {
                 Assert.AreEqual(0.21, synapse.Permanence, 0.01);
                 Assert.IsTrue(prevWinnerCells.Contains(synapse.getPresynapticCell()));
-            }
+            } 
         }
 
         [TestMethod]
