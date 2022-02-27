@@ -285,7 +285,7 @@ namespace UnitTestsProject
             tm.Compute(previousActiveColumns, true);
             tm.Compute(activeColumns, true);
 
-            Assert.AreEqual(0.7, as1.Permanence, 0.1);
+            Assert.AreEqual(0.6, as1.Permanence, 0.1);
             Assert.AreEqual(0.6, as2.Permanence, 0.1);
             Assert.AreEqual(0.6, as3.Permanence, 0.1);
             Assert.AreEqual(0.42, is1.Permanence, 0.001);
@@ -507,7 +507,7 @@ namespace UnitTestsProject
         [TestMethod]
         public void TestMatchingSegmentAddSynapsesToSubsetOfWinnerCells()
         {
-            TemporalMemory tm = new TemporalMemory();
+            TemporalMemory tm =  new TemporalMemory();
             Connections cn = new Connections();
             Parameters p = getDefaultParameters(null, KEY.CELLS_PER_COLUMN, 1);
             p = getDefaultParameters(p, KEY.MIN_THRESHOLD, 1);
