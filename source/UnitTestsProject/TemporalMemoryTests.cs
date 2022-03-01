@@ -609,30 +609,6 @@ namespace UnitTestsProject
             ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
             Assert.IsTrue(cc.WinnerCells.SequenceEqual(prevWinnerCells));
 
-
-            [TestMethod]
-            [TestCategory("Prod")]
-            public void TestMatchingSegmentAddSynapsesToAllWinnerCells()
-            {
-                TemporalMemory tm = new TemporalMemory();
-                Connections cn = new Connections();
-                Parameters p = getDefaultParameters(null, KEY.CELLS_PER_COLUMN, 1);
-                p = getDefaultParameters(p, KEY.MIN_THRESHOLD, 1);
-                p.apply(cn);
-                tm.Init(cn);
-
-                int[] previousActiveColumns = { 0, 1 };
-                IList<Cell> prevWinnerCells = cn.GetCellSet(new int[] { 0, 1 });
-                int[] activeColumns = { 4 };
-
-                DistalDendrite matchingSegment = cn.CreateDistalSegment(cn.GetCell(4));
-                cn.CreateSynapse(matchingSegment, cn.GetCell(0), 0.5);
-
-                ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
-                Assert.IsTrue(cc.WinnerCells.SequenceEqual(prevWinnerCells));
-
-                cc = tm.Compute(activeColumns, true) as ComputeCycle;
-
             //DD List<Synapse> synapses = cn.GetSynapses(matchingSegment);
             List<Synapse> synapses = matchingSegment.Synapses;
             Assert.AreEqual(2, synapses.Count);
