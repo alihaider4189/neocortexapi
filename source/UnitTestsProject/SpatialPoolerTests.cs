@@ -560,7 +560,7 @@ namespace  UnitTestsProject
             HtmConfig defaultConfig = new HtmConfig(new int[] { 5 }, new int[] { 3 })
             {
                 PotentialRadius = 5,
-                NumActiveColumnsPerInhArea = 5,
+                NumActiveColumnsPerInhArea = 7,
                 GlobalInhibition = true,
                 SynPermActiveInc = 0.1,
                 SynPermInactiveDec = 0.1,
