@@ -143,7 +143,6 @@ namespace  UnitTestsProject
             Assert.AreEqual(10, mem.HtmConfig.DutyCyclePeriod);//, 0);
             Assert.AreEqual(10.0, mem.HtmConfig.MaxBoost);//, 0);
             Assert.AreEqual(42, mem.HtmConfig.RandomGenSeed);
-            
             Assert.AreEqual(5, mem.HtmConfig.NumInputs);
             Assert.AreEqual(5, mem.HtmConfig.NumColumns);
         }
@@ -2768,6 +2767,52 @@ namespace  UnitTestsProject
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
         public void testUpdateDutyCycleHelper()
+        {
+            setupParameters();
+            parameters.setInputDimensions(new int[] { 5 });
+            parameters.setColumnDimensions(new int[] { 5 });
+            InitTestSPInstance();
+
+            double[] dc = new double[5];
+            ArrayUtils.InitArray(dc, 1000.0);
+            double[] newvals = new double[5];
+            int period = 1000;
+            double[] newDc = sp.UpdateDutyCyclesHelper(mem, dc, newvals, period);
+            double[] expectedDutyCycles = new double[] { 999, 999, 999, 999, 999 };
+            Assert.IsTrue(expectedDutyCycles.SequenceEqual(newDc));
+
+            dc = new double[5];
+            ArrayUtils.InitArray(dc, 1000.0);
+            newvals = new double[5];
+            ArrayUtils.InitArray(newvals, 1000);
+            period = 1000;
+            newDc = sp.UpdateDutyCyclesHelper(mem, dc, newvals, period);
+
+            expectedDutyCycles = new double[5];
+            Array.Copy(dc, expectedDutyCycles, expectedDutyCycles.Length);
+
+            Assert.IsTrue(expectedDutyCycles.SequenceEqual(newDc));
+
+            dc = new double[5];
+            ArrayUtils.InitArray(dc, 1000.0);
+            newvals = new double[] { 2000, 4000, 5000, 6000, 7000 };
+            period = 1000;
+            newDc = sp.UpdateDutyCyclesHelper(mem, dc, newvals, period);
+            expectedDutyCycles = new double[] { 1001, 1003, 1004, 1005, 1006 };
+            Assert.IsTrue(expectedDutyCycles.SequenceEqual(newDc));
+
+            dc = new double[] { 1000, 800, 600, 400, 2000 };
+            newvals = new double[5];
+            period = 2;
+            newDc = sp.UpdateDutyCyclesHelper(mem, dc, newvals, period);
+            expectedDutyCycles = new double[] { 500, 400, 300, 200, 1000 };
+            Assert.IsTrue(expectedDutyCycles.SequenceEqual(newDc));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [TestCategory("Prod")]
+        public void testUpdateDutyCycleHelper1()
         {
             setupParameters();
             parameters.setInputDimensions(new int[] { 5 });
