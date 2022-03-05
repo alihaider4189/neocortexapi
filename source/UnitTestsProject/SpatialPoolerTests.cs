@@ -344,6 +344,51 @@ namespace  UnitTestsProject
             }
         }
 
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [TestCategory("Prod")]
+        public void testCompute2_1()
+        {
+            setupParameters();
+            parameters.setInputDimensions(new int[] { 10 });
+            parameters.setColumnDimensions(new int[] { 5 });
+            parameters.setPotentialRadius(3);
+            parameters.setPotentialPct(0.3);
+            parameters.setGlobalInhibition(false);
+            parameters.setLocalAreaDensity(-1.0);
+            parameters.setNumActiveColumnsPerInhArea(3);
+            parameters.setStimulusThreshold(1);
+            parameters.setSynPermInactiveDec(0.01);
+            parameters.setSynPermActiveInc(0.1);
+            parameters.setMinPctOverlapDutyCycles(0.1);
+            parameters.setMinPctActiveDutyCycles(0.1);
+            parameters.setDutyCyclePeriod(10);
+            parameters.setMaxBoost(10);
+            parameters.setSynPermConnected(0.1);
+
+            mem = new Connections();
+            parameters.apply(mem);
+
+
+
+            SpatialPoolerMock mock = new SpatialPoolerMock(new int[] { 0, 1, 2, 3, 4 });
+            mock.Init(mem);
+
+            int[] inputVector = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+            int[] activeArray = new int[] { 0, 0, 0, 0, 0 };
+            for (int i = 0; i < 20; i++)
+            {
+                mock.compute(inputVector, activeArray, true);
+            }
+
+            for (int i = 0; i < mem.HtmConfig.NumColumns; i++)
+            {
+                int[] permanences = ArrayUtils.ToIntArray(mem.GetColumn(i).ProximalDendrite.RFPool.GetDensePermanences(mem.HtmConfig.NumInputs));
+                //int[] potential = (int[])mem.getConnectedCounts().getSlice(i);
+                int[] potential = (int[])mem.GetColumn(i).ConnectedInputBits;
+                Assert.IsTrue(permanences.SequenceEqual(potential));
+            }
+        }
         /**
          * When stimulusThreshold is 0, allow columns without any overlap to become
          * active. This test focuses on the global inhibition code path.
