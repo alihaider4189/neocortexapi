@@ -143,7 +143,7 @@ namespace  UnitTestsProject
             Assert.AreEqual(10, mem.HtmConfig.DutyCyclePeriod);//, 0);
             Assert.AreEqual(10.0, mem.HtmConfig.MaxBoost);//, 0);
             Assert.AreEqual(42, mem.HtmConfig.RandomGenSeed);
-
+            
             Assert.AreEqual(5, mem.HtmConfig.NumInputs);
             Assert.AreEqual(5, mem.HtmConfig.NumColumns);
         }
@@ -458,6 +458,35 @@ namespace  UnitTestsProject
          * When stimulusThreshold is > 0, don't allow columns without any overlap to
          * become active. This test focuses on the global inhibition code path.
          */
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [TestCategory("Prod")]
+        [TestCategory("InitHtmConfig")]
+        public void TestZeroOverlap_NoStimulusThreshold_GlobalInhibition1_1()
+        {
+            int inputSize = 10;
+            int nColumns = 20;
+
+            HtmConfig defaultConfig = new HtmConfig(new int[] { inputSize }, new int[] { nColumns });
+            Connections cn = new Connections(defaultConfig);
+
+            var htmConfig = cn.HtmConfig;
+            htmConfig.PotentialRadius = 10;
+            htmConfig.GlobalInhibition = true;
+            htmConfig.NumActiveColumnsPerInhArea = 3.0;
+            htmConfig.StimulusThreshold = 0.0;
+            htmConfig.Random = new ThreadSafeRandom(42);
+            htmConfig.RandomGenSeed = 42;
+
+            SpatialPooler sp = new SpatialPooler();
+            sp.Init(cn);
+
+            int[] activeArray = new int[nColumns];
+            sp.compute(new int[inputSize], activeArray, true);
+
+            Assert.IsTrue(3 == activeArray.Count(i => i > 0));//, ArrayUtils.INT_GREATER_THAN_0).length);
+        }
+
         [TestMethod]
         [DataRow(PoolerMode.SingleThreaded)]
         [DataRow(PoolerMode.Multicore)]
