@@ -3260,7 +3260,7 @@ namespace  UnitTestsProject
             {
                 sp.compute(new int[misMatchedDims], new int[25], true);
                 //fail();
-                //Assert.Fail();
+                //Assert.Fail(c.htmconfig.nuNumInputs);
             }
             catch (ArgumentException)
             {

@@ -197,10 +197,10 @@ namespace UnitTestsProject
 
             InitTestSPInstance();
 
-            Assert.AreEqual(4, mem.HtmConfig.InputDimensions[0]);
-            Assert.AreEqual(4, mem.HtmConfig.ColumnDimensions[0]);
-            Assert.AreEqual(4, mem.HtmConfig.PotentialRadius);
-            Assert.AreEqual(0.4, mem.HtmConfig.PotentialPct);//, 0);
+            Assert.AreEqual(5, mem.HtmConfig.InputDimensions[0]);
+            Assert.AreEqual(5, mem.HtmConfig.ColumnDimensions[0]);
+            Assert.AreEqual(5, mem.HtmConfig.PotentialRadius);
+            Assert.AreEqual(0.5, mem.HtmConfig.PotentialPct);//, 0);
             Assert.AreEqual(false, mem.HtmConfig.GlobalInhibition);
             Assert.AreEqual(-1.0, mem.HtmConfig.LocalAreaDensity);//, 0);
             Assert.AreEqual(3, mem.HtmConfig.NumActiveColumnsPerInhArea);//, 0);
