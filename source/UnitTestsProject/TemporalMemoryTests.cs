@@ -183,6 +183,11 @@ namespace UnitTestsProject
             cn.CreateSynapse(activeSegment, cn.GetCell(3), 0.5);
 
             ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
+            var resukt = tm.BurstColumn(cn,);
+            //
+            // result.r = 2
+            //result.t =3
+            //Assert.IsEqual(result.r,2);
             Assert.IsFalse(cc.ActiveCells.Count == 0);
             Assert.IsFalse(cc.WinnerCells.Count == 0);
             Assert.IsFalse(cc.PredictiveCells.Count == 0);
@@ -197,7 +202,7 @@ namespace UnitTestsProject
 
         [TestMethod]
         [TestCategory("Prod")]
-        public void TestZeroActiveColumns1()
+        public void TestWithTwoActiveColumns()
         {
             TemporalMemory tm = new TemporalMemory();
             Connections cn = new Connections();
@@ -205,7 +210,7 @@ namespace UnitTestsProject
             p.apply(cn);
             tm.Init(cn);
             
-            int[] previousActiveColumns = { 0 };
+            int[] previousActiveColumns = { 2,3 };
             Cell cell5 = cn.GetCell(5);
 
             DistalDendrite activeSegment = cn.CreateDistalSegment(cell5);
@@ -550,6 +555,7 @@ namespace UnitTestsProject
         }
 
         [TestMethod]
+        [TestCategory("Prod")]
         public void TestMatchingSegmentAddSynapsesToSubsetOfWinnerCells()
         {
             TemporalMemory tm =  new TemporalMemory();
