@@ -145,21 +145,22 @@ namespace UnitTestsProject
         }
 
         [TestMethod]
-        public void TestBurstUnpredictedColumns1()
+        public void TestArrayNotContainingCells()
         {
-            HtmConfig htmConfig = GetDefaultTMParameters();
+            
+               HtmConfig htmConfig = GetDefaultTMParameters();
             Connections cn = new Connections(htmConfig);
 
             TemporalMemory tm = new TemporalMemory();
 
             tm.Init(cn);
-
-            int[] activeColumns = { 0 };
-            IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
+            
+            int[] activeColumns = { 4, 5 };
+            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3 });
 
             ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle;
 
-            Assert.IsTrue(cc.ActiveCells.SequenceEqual(burstingCells));
+            Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
         }
 
 
@@ -183,7 +184,7 @@ namespace UnitTestsProject
             cn.CreateSynapse(activeSegment, cn.GetCell(3), 0.5);
 
             ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
-            var resukt = tm.BurstColumn(cn,);
+            //var resukt = tm.BurstColumn(cn,);
             //
             // result.r = 2
             //result.t =3
@@ -1177,6 +1178,21 @@ namespace UnitTestsProject
             tm.Init(cn);
 
             Assert.AreEqual(64 * 64, cn.HtmConfig.NumColumns);
+        }
+
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestNumberOfSynapseCount() 
+        {
+            HtmConfig htmConfig = GetDefaultTMParameters();
+            Connections cn = new Connections(htmConfig);
+
+            TemporalMemory tm = new TemporalMemory();
+
+            tm.Init(cn);
+
+           
+
         }
 
         [TestMethod]
