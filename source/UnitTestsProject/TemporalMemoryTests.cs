@@ -232,8 +232,9 @@ namespace UnitTestsProject
             Assert.IsTrue(cc2.WinnerCells.Count == 0);
             Assert.IsTrue(cc2.PredictiveCells.Count == 0);
         }
+     
 
-        [TestMethod]
+        [TestMethod] 
         [TestCategory("Prod")]
         public void TestPredictedActiveCellsAreAlwaysWinners()
         {
@@ -884,6 +885,7 @@ namespace UnitTestsProject
 
             Assert.AreEqual(0, cn.NumSegments(expectedActiveCell));
         }
+      
 
         [TestMethod]
         [TestCategory("Prod")]
@@ -1065,6 +1067,26 @@ namespace UnitTestsProject
             //Assert.IsTrue(segMapBefore.Keys.SequenceEqual(cn.GetSegmentMapping().Keys));
         }
 
+        [TestMethod]
+        [TestCategory("Prod")]
+
+        public void RandomSingleCellChoseAsAWinner()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = getDefaultParameters(null, KEY.MAX_NEW_SYNAPSE_COUNT, 4);
+            p = getDefaultParameters(p, KEY.PREDICTED_SEGMENT_DECREMENT, 0.02);
+            p = getDefaultParameters(p, KEY.INITIAL_PERMANENCE, 0.2);
+            p.apply(cn);
+            tm.Init(cn);
+
+
+
+
+
+
+        }
+
         private void GetSynSums(Connections cn, out int prevPresynSum, out int segSynSum)
         {
             prevPresynSum = 0;
@@ -1179,6 +1201,24 @@ namespace UnitTestsProject
 
             Assert.AreEqual(64 * 64, cn.HtmConfig.NumColumns);
         }
+
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void testNumberOfColumns_1()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = Parameters.getAllDefaultParameters();
+            p.Set(KEY.COLUMN_DIMENSIONS, new int[] { 128, 128 });
+            p.Set(KEY.CELLS_PER_COLUMN, 56);
+            p.apply(cn);
+            tm.Init(cn);
+
+            Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns);
+        }
+
+
+
 
         [TestMethod]
         [TestCategory("Prod")]
