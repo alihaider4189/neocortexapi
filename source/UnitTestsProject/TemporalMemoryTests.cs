@@ -1252,7 +1252,28 @@ namespace UnitTestsProject
             TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
             Assert.AreEqual(1.0, s1.Permanence, 0.1);
         }
+        //<summary>
+        // TEst an adapt segment to mid 
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestAdaptSegmentToMid()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = Parameters.getAllDefaultParameters();
+            p.apply(cn);
+            tm.Init(cn);
 
+            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
+            Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.5); // central 
+            
+            TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
+            Assert.AreEqual(0.6, s1.Permanence, 0.1);
+            
+            // Now permanence should be at max
+            TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
+            Assert.AreEqual(0.7, s1.Permanence, 0.1);
+        }
         [TestMethod]
         [TestCategory("Prod")]
         public void TestAdaptSegmentToMin()
