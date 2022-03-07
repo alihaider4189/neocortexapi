@@ -143,7 +143,6 @@ namespace  UnitTestsProject
             Assert.AreEqual(10, mem.HtmConfig.DutyCyclePeriod);//, 0);
             Assert.AreEqual(10.0, mem.HtmConfig.MaxBoost);//, 0);
             Assert.AreEqual(42, mem.HtmConfig.RandomGenSeed);
-
             Assert.AreEqual(5, mem.HtmConfig.NumInputs);
             Assert.AreEqual(5, mem.HtmConfig.NumColumns);
         }
@@ -344,6 +343,51 @@ namespace  UnitTestsProject
             }
         }
 
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [TestCategory("Prod")]
+        public void testCompute2_1()
+        {
+            setupParameters();
+            parameters.setInputDimensions(new int[] { 10 });
+            parameters.setColumnDimensions(new int[] { 5 });
+            parameters.setPotentialRadius(3);
+            parameters.setPotentialPct(0.3);
+            parameters.setGlobalInhibition(false);
+            parameters.setLocalAreaDensity(-1.0);
+            parameters.setNumActiveColumnsPerInhArea(3);
+            parameters.setStimulusThreshold(1);
+            parameters.setSynPermInactiveDec(0.01);
+            parameters.setSynPermActiveInc(0.1);
+            parameters.setMinPctOverlapDutyCycles(0.1);
+            parameters.setMinPctActiveDutyCycles(0.1);
+            parameters.setDutyCyclePeriod(10);
+            parameters.setMaxBoost(10);
+            parameters.setSynPermConnected(0.1);
+
+            mem = new Connections();
+            parameters.apply(mem);
+
+
+
+            SpatialPoolerMock mock = new SpatialPoolerMock(new int[] { 0, 1, 2, 3, 4 });
+            mock.Init(mem);
+
+            int[] inputVector = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+            int[] activeArray = new int[] { 0, 0, 0, 0, 0 };
+            for (int i = 0; i < 20; i++)
+            {
+                mock.compute(inputVector, activeArray, true);
+            }
+
+            for (int i = 0; i < mem.HtmConfig.NumColumns; i++)
+            {
+                int[] permanences = ArrayUtils.ToIntArray(mem.GetColumn(i).ProximalDendrite.RFPool.GetDensePermanences(mem.HtmConfig.NumInputs));
+                //int[] potential = (int[])mem.getConnectedCounts().getSlice(i);
+                int[] potential = (int[])mem.GetColumn(i).ConnectedInputBits;
+                Assert.IsTrue(permanences.SequenceEqual(potential));
+            }
+        }
         /**
          * When stimulusThreshold is 0, allow columns without any overlap to become
          * active. This test focuses on the global inhibition code path.
@@ -413,6 +457,35 @@ namespace  UnitTestsProject
          * When stimulusThreshold is > 0, don't allow columns without any overlap to
          * become active. This test focuses on the global inhibition code path.
          */
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [TestCategory("Prod")]
+        [TestCategory("InitHtmConfig")]
+        public void TestZeroOverlap_NoStimulusThreshold_GlobalInhibition1_1()
+        {
+            int inputSize = 10;
+            int nColumns = 20;
+
+            HtmConfig defaultConfig = new HtmConfig(new int[] { inputSize }, new int[] { nColumns });
+            Connections cn = new Connections(defaultConfig);
+
+            var htmConfig = cn.HtmConfig;
+            htmConfig.PotentialRadius = 10;
+            htmConfig.GlobalInhibition = true;
+            htmConfig.NumActiveColumnsPerInhArea = 3.0;
+            htmConfig.StimulusThreshold = 0.0;
+            htmConfig.Random = new ThreadSafeRandom(42);
+            htmConfig.RandomGenSeed = 42;
+
+            SpatialPooler sp = new SpatialPooler();
+            sp.Init(cn);
+
+            int[] activeArray = new int[nColumns];
+            sp.compute(new int[inputSize], activeArray, true);
+
+            Assert.IsTrue(3 == activeArray.Count(i => i > 0));//, ArrayUtils.INT_GREATER_THAN_0).length);
+        }
+
         [TestMethod]
         [DataRow(PoolerMode.SingleThreaded)]
         [DataRow(PoolerMode.Multicore)]
@@ -2739,6 +2812,52 @@ namespace  UnitTestsProject
         [TestMethod]
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
+        public void testUpdateDutyCycleHelper1()
+        {
+            setupParameters();
+            parameters.setInputDimensions(new int[] { 5 });
+            parameters.setColumnDimensions(new int[] { 5 });
+            InitTestSPInstance();
+
+            double[] dc = new double[5];
+            ArrayUtils.InitArray(dc, 1000.0);
+            double[] newvals = new double[5];
+            int period = 1000;
+            double[] newDc = sp.UpdateDutyCyclesHelper(mem, dc, newvals, period);
+            double[] expectedDutyCycles = new double[] { 999, 999, 999, 999, 999 };
+            Assert.IsTrue(expectedDutyCycles.SequenceEqual(newDc));
+
+            dc = new double[5];
+            ArrayUtils.InitArray(dc, 1000.0);
+            newvals = new double[5];
+            ArrayUtils.InitArray(newvals, 1000);
+            period = 1000;
+            newDc = sp.UpdateDutyCyclesHelper(mem, dc, newvals, period);
+
+            expectedDutyCycles = new double[5];
+            Array.Copy(dc, expectedDutyCycles, expectedDutyCycles.Length);
+
+            Assert.IsTrue(expectedDutyCycles.SequenceEqual(newDc));
+
+            dc = new double[5];
+            ArrayUtils.InitArray(dc, 1000.0);
+            newvals = new double[] { 2000, 4000, 5000, 6000, 7000 };
+            period = 1000;
+            newDc = sp.UpdateDutyCyclesHelper(mem, dc, newvals, period);
+            expectedDutyCycles = new double[] { 1001, 1003, 1004, 1005, 1006 };
+            Assert.IsTrue(expectedDutyCycles.SequenceEqual(newDc));
+
+            dc = new double[] { 1000, 800, 600, 400, 2000 };
+            newvals = new double[5];
+            period = 2;
+            newDc = sp.UpdateDutyCyclesHelper(mem, dc, newvals, period);
+            expectedDutyCycles = new double[] { 500, 400, 300, 200, 1000 };
+            Assert.IsTrue(expectedDutyCycles.SequenceEqual(newDc));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [TestCategory("Prod")]
         public void testInhibitColumnsGlobal()
         {
             setupParameters();
@@ -3260,7 +3379,7 @@ namespace  UnitTestsProject
             {
                 sp.compute(new int[misMatchedDims], new int[25], true);
                 //fail();
-                //Assert.Fail();
+                //Assert.Fail(c.htmconfig.nuNumInputs);
             }
             catch (ArgumentException)
             {
