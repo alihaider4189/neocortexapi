@@ -153,7 +153,7 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a  LinkedHashSet{T}  containing the Cell specified by the passed in indexes
+        ///Test a  LinkedHashSet{T}  containing the Cell specified by the passed in indexes
         /// </summary>
         [TestMethod]
         public void TestBurstUnpredictedColumns()
@@ -192,7 +192,7 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a  zero active columns 
+        ///Test a active cell, winner cell and predictive cell in 0 active columns
         /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
@@ -231,7 +231,7 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a two active coulmns
+        ///Test a active cell, winner cell and predictive cell in two active columns
         /// </summary>
         
         [TestMethod]
@@ -262,14 +262,14 @@ namespace UnitTestsProject
             Assert.IsTrue(cc.PredictiveCells.Count == 0);
 
             int[] zeroColumns = new int[0];
-            ComputeCycle cc2 = tm.Compute(zeroColumns, true) as ComputeCycle;
-            Assert.IsTrue(cc2.ActiveCells.Count == 0);
-            Assert.IsTrue(cc2.WinnerCells.Count == 0);
-            Assert.IsTrue(cc2.PredictiveCells.Count == 0);
+            ComputeCycle cc2 = tm.Compute(zeroColumns, true) as ComputeCycle; ///learn = true
+            Assert.IsTrue(cc2.ActiveCells.Count == 0); /// Active cell ==0
+            Assert.IsTrue(cc2.WinnerCells.Count == 0);  /// wineer cell equal to 0
+            Assert.IsTrue(cc2.PredictiveCells.Count == 0); ///lost of depolirized cells equal to 0
         }
 
         /// <summary>
-        //Test a predicted cells which are always winner 
+        ///Test a predicted cells which are always winner by comparing two elements
         /// </summary>
         [TestMethod] 
         [TestCategory("Prod")]
@@ -299,11 +299,12 @@ namespace UnitTestsProject
             ComputeCycle cc = tm.Compute(previousActiveColumns, false) as ComputeCycle; // learn=false
             cc = tm.Compute(activeColumns, false) as ComputeCycle; // learn=false
 
+            // two sequences are equal by comparing the elements
             Assert.IsTrue(cc.WinnerCells.SequenceEqual(new LinkedHashSet<Cell>(expectedWinnerCells)));
         }
 
         /// <summary>
-        //Test a forcefully correctly Active Cell
+        ///Test a forcefully correctly Active segment
         /// </summary>
         [TestMethod]
         public void TestReinforcedCorrectlyActiveSegments()
@@ -338,7 +339,7 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a Reinforced Selected Matching Segment InBursting Column
+        ///Test a Reinforced Selected Matching Segment InBursting Column
         /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
@@ -377,7 +378,7 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a Un-change for non selected matching in bursting columns
+        /// Test a Un-change for non selected matching in bursting columns
         /// </summary>
 
         [TestMethod]
@@ -408,8 +409,8 @@ namespace UnitTestsProject
             Synapse as2 = cn.CreateSynapse(otherMatchingSegment, previousActiveCells[1], 0.3);
             Synapse is1 = cn.CreateSynapse(otherMatchingSegment, cn.GetCell(81), 0.3);
 
-            tm.Compute(previousActiveColumns, true);
-            tm.Compute(activeColumns, true);
+            tm.Compute(previousActiveColumns, true); //Calculation of the cells, which become active in the current cycle
+            tm.Compute(activeColumns, true); // Calculation of dendrite segments which becom active in the current cycle
 
             Assert.AreEqual(0.3, as1.Permanence, 0.01);
             Assert.AreEqual(0.3, as2.Permanence, 0.01);
@@ -417,12 +418,11 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a Un-change for non selected matching in bursting columns
+        ///Test a Un-change for non selected matching in no cells have active segments, activate 4 and 5 cell in the column
         /// </summary>
 
         [TestMethod]
         [TestCategory("Prod")]
-        
         public void TestNoChangeToNoTSelectedMatchingSegmentsInBurstingColumn()
         {
             TemporalMemory tm = new TemporalMemory(); // TM class object
@@ -435,6 +435,7 @@ namespace UnitTestsProject
             int[] previousActiveColumns = { 0 }; 
             int[] activeColumns = { 1 };
             Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) };
+           // no cells have active segments, activate 4 and 5 cell in the column
             Cell[] burstingCells = { cn.GetCell(4), cn.GetCell(5) };
 
             DistalDendrite selectedMatchingSegment = cn.CreateDistalSegment(burstingCells[0]);
@@ -454,8 +455,10 @@ namespace UnitTestsProject
             Assert.AreEqual(0.3, is1.Permanence, 0.01);
         }
 
-       
 
+        /// <summary>
+        /// test a funtion to unchange matching segment in predicted 0 active columns
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNoChangeToMatchingSegmentsInPredictedActiveColumn()
@@ -497,9 +500,10 @@ namespace UnitTestsProject
             Assert.AreEqual(0.3, s4.Permanence, 0.01);
         }
 
-        // </Summary>
-        //test a funtion to un change matching segment in predicted two active columns
-        //<Summary>
+        /// <summary>
+        /// test a funtion to un change matching segment in predicted two active columns
+        /// </summary>
+       
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNoChangeToMatchingSegmentsInPredictedTwoActiveColumn()
@@ -550,8 +554,9 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a Un-change for non selected matching in bursting columns
+        /// Test a Un-change for non selected matching in bursting columns
         /// </summary>
+     
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNoNewSegmentIfNotEnoughWinnerCells()
@@ -571,9 +576,11 @@ namespace UnitTestsProject
             Assert.AreEqual(0, cn.NumSegments(), 0);
         }
 
-        //</Summary>
-        //check no New segment in winner cells of specified cell 
-        //<Summary>
+
+        /// <summary>
+        /// check no New segment in winner cells of specified cell 
+        /// </summary>
+        
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNoNewSegmentIfNotEnoughWinnerCells1()
@@ -593,6 +600,9 @@ namespace UnitTestsProject
             Assert.AreEqual(2, cn.NumSegments(), 0);
         }
 
+        /// <summary>
+        /// Add new synapse in a new segment to make subset of winner cells
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNewSegmentAddSynapsesToSubsetOfWinnerCells()
@@ -633,6 +643,9 @@ namespace UnitTestsProject
             } 
         }
 
+        /// <summary>
+        /// Add new synapse in a new segment to make winner to all cells with 4 previous active cells
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNewSegmentAddSynapsesToAllWinnerCells()
@@ -676,9 +689,13 @@ namespace UnitTestsProject
             Assert.IsTrue(prevWinnerCells.SequenceEqual(presynapticCells));
 
         }
+
+        /// <summary>
+        /// Add new synapse in a new segment to make winner to all cells with 5 previous active cells
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
-        // add 5 previously active columns
+        
         public void TestNewSegmentAddSynapsesToAllWinnerCells1()
         {
             TemporalMemory tm = new TemporalMemory();
@@ -687,7 +704,7 @@ namespace UnitTestsProject
             p.apply(cn);
             tm.Init(cn);
 
-            int[] previousActiveColumns = { 0, 1, 2, 3 };
+            int[] previousActiveColumns = { 0, 1, 2, 3 }; // add 5 previously active columns
             int[] activeColumns = { 5 };
 
             ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
@@ -720,6 +737,9 @@ namespace UnitTestsProject
             Assert.IsTrue(prevWinnerCells.SequenceEqual(presynapticCells));
         }
 
+        /// <summary>
+        /// Matcing Segment of synapse which will be part to winner cells
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestMatchingSegmentAddSynapsesToSubsetOfWinnerCells()
@@ -759,7 +779,9 @@ namespace UnitTestsProject
             }
         }
 
-
+        /// <summary>
+        /// Remove weak syanpse which are predicted to be wrong 
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestMatchingSegmentAddSynapsesToAllWinnerCells()
@@ -796,12 +818,14 @@ namespace UnitTestsProject
             }
         }
 
+        ///<Summary>
         /**
          * When a segment becomes active, grow synapses to previous winner cells.
          *
          * The number of grown synapses is calculated from the "matching segment"
          * overlap, not the "active segment" overlap.
          */
+        ///<Summary>
         [TestMethod]
         public void TestActiveSegmentGrowSynapsesAccordingToPotentialOverlap()
         {
@@ -841,6 +865,9 @@ namespace UnitTestsProject
                 (presynapticCells.Contains(cn.GetCell(0)) && presynapticCells.Contains(cn.GetCell(1)) && presynapticCells.Contains(cn.GetCell(2)) && presynapticCells.Contains(cn.GetCell(4)))));
         }
 
+        /// <summary>
+        /// Remove weak syanpse which are predicted to be wrong 
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestDestroyWeakSynapseOnWrongPrediction()
@@ -871,6 +898,9 @@ namespace UnitTestsProject
             Assert.AreEqual(3, activeSegment.Synapses.Count);
         }
 
+        /// <summary>
+        /// Remove weak syanpse which are hold up to be active 
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestDestroyWeakSynapseOnActiveReinforce()
@@ -949,6 +979,9 @@ namespace UnitTestsProject
             //Assert.IsFalse(presynapticCells.stream().mapToInt(cell->cell.getIndex()).anyMatch(i->i == 0));
         }
 
+        /// <summary>
+        /// Reset the recently active segment to make space for new segments
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestRecycleLeastRecentlyActiveSegmentToMakeRoomForNewSegment()
@@ -1020,7 +1053,9 @@ namespace UnitTestsProject
             }
         }
 
-
+        /// <summary>
+        /// destory segments from too few synapse which are matched 
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestDestroySegmentsWithTooFewSynapsesToBeMatching()
@@ -1049,8 +1084,10 @@ namespace UnitTestsProject
 
             Assert.AreEqual(0, cn.NumSegments(expectedActiveCell));
         }
-      
 
+        /// <summary>
+        /// Punish segment which are in active in column
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestPunishMatchingSegmentsInInactiveColumns()
@@ -1091,6 +1128,9 @@ namespace UnitTestsProject
             Assert.AreEqual(0.50, is2.Permanence, 0.01);
         }
 
+        /// <summary>
+        /// Add New segments to cell with fewer segment
+        /// </summary>
         [TestMethod]
         public void TestAddSegmentToCellWithFewestSegments()
         {
@@ -1169,6 +1209,9 @@ namespace UnitTestsProject
             Assert.IsTrue(grewOnCell2);
         }
 
+        /// <summary>
+        /// Connection between unchanged cells while learning
+        /// </summary>
         [TestMethod]
         [TestCategory("Tests with Serialization Issue")]
         public void TestConnectionsNeverChangeWhenLearningDisabled()
@@ -1231,9 +1274,12 @@ namespace UnitTestsProject
             //Assert.IsTrue(segMapBefore.Keys.SequenceEqual(cn.GetSegmentMapping().Keys));
         }
 
+
+        /// <summary>
+        /// Random Single Cell Chose As a Winner
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
-
         public void RandomSingleCellChoseAsAWinner()
         {
             TemporalMemory tm = new TemporalMemory();
@@ -1251,6 +1297,10 @@ namespace UnitTestsProject
 
         }
 
+        /// <summary>
+        /// Return sum of all synapse 
+        /// </summary>
+        
         private void GetSynSums(Connections cn, out int prevPresynSum, out int segSynSum)
         {
             prevPresynSum = 0;
@@ -1270,7 +1320,11 @@ namespace UnitTestsProject
                 }
             }
         }
-
+        /// <summary>
+        /// Test a least used cell in a column
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Prod")]
         public void TestLeastUsedCell()
         {
             TemporalMemory tm = new TemporalMemory();
@@ -1289,6 +1343,9 @@ namespace UnitTestsProject
             }
         }
 
+        /// <summary>
+        /// Test adapt segment from syapse 
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestAdaptSegment()
@@ -1311,6 +1368,9 @@ namespace UnitTestsProject
             Assert.AreEqual(0.8, s3.Permanence, 0.01);
         }
 
+        /// <summary>
+        /// Test adapt segment from syapse to Maximum
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestAdaptSegmentToMax()
@@ -1331,8 +1391,9 @@ namespace UnitTestsProject
             TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
             Assert.AreEqual(1.0, s1.Permanence, 0.1);
         }
-        //<summary>
-        // TEst an adapt segment to mid 
+        ///<summary>
+        /// Test adapt segment from syapse to mid 
+        /// <Summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestAdaptSegmentToMid()
@@ -1353,6 +1414,10 @@ namespace UnitTestsProject
             TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
             Assert.AreEqual(0.7, s1.Permanence, 0.1);
         }
+
+        /// <summary>
+        /// Test adapt segment from syapse to minimum
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestAdaptSegmentToMin()
@@ -1366,7 +1431,9 @@ namespace UnitTestsProject
             DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
             Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.1);
             cn.CreateSynapse(dd, cn.GetCell(1), 0.3);
-
+            /// Increments the permanence of the segment's synapse if the synapse's presynaptic cell was active in the previous cycle.
+            /// If it was not active, then it will decrement the permanence value. 
+            /// If the permamence is below EPSILON, synapse is destroyed.
             TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
             //DD Assert.IsFalse(cn.GetSynapses(dd).Contains(s1));
             Assert.IsFalse(dd.Synapses.Contains(s1));
