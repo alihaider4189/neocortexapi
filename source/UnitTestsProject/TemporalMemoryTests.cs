@@ -497,6 +497,9 @@ namespace UnitTestsProject
             Assert.AreEqual(0.3, s4.Permanence, 0.01);
         }
 
+        // </Summary>
+        //test a funtion to un change matching segment in predicted two active columns
+        //<Summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNoChangeToMatchingSegmentsInPredictedTwoActiveColumn()
@@ -520,13 +523,13 @@ namespace UnitTestsProject
             cn.CreateSynapse(activeSegment, previousActiveCells[2], 0.5);
             cn.CreateSynapse(activeSegment, previousActiveCells[3], 0.5);
 
-            DistalDendrite matchingSegmentOnSameCell = cn.CreateDistalSegment(expectedActiveCell);
-            Synapse s1 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[0], 0.3);
+            DistalDendrite matchingSegmentOnSameCell = cn.CreateDistalSegment(expectedActiveCell);//the Cell to which a segment is added
+            Synapse s1 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[0], 0.3); //build synaptic connections to cells inside of columns
             Synapse s2 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[1], 0.3);
             Synapse s3 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[2], 0.3);
             Synapse s4 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[3], 0.3);
 
-            DistalDendrite matchingSegmentOnOtherCell = cn.CreateDistalSegment(otherBurstingCell);
+            DistalDendrite matchingSegmentOnOtherCell = cn.CreateDistalSegment(otherBurstingCell); 
             Synapse s5 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[0], 0.3);
             Synapse s6 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[1], 0.3);
             Synapse s7 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[2], 0.3);
@@ -566,6 +569,28 @@ namespace UnitTestsProject
             tm.Compute(activeColumns, true);
 
             Assert.AreEqual(0, cn.NumSegments(), 0);
+        }
+
+        //</Summary>
+        //check no New segment in winner cells of specified cell 
+        //<Summary>
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestNoNewSegmentIfNotEnoughWinnerCells1()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = getDefaultParameters(null, KEY.MAX_NEW_SYNAPSE_COUNT, 3);
+            p.apply(cn);
+            tm.Init(cn);
+
+            int[] zeroColumns = { 1 };
+            int[] activeColumns = { 1,2 };
+
+            tm.Compute(zeroColumns, true);
+            tm.Compute(activeColumns, true);
+
+            Assert.AreEqual(2, cn.NumSegments(), 0);
         }
 
         [TestMethod]
