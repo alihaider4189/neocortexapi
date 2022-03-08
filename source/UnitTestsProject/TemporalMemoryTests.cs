@@ -425,13 +425,14 @@ namespace UnitTestsProject
         
         public void TestNoChangeToNoTSelectedMatchingSegmentsInBurstingColumn()
         {
-            TemporalMemory tm = new TemporalMemory();
+            TemporalMemory tm = new TemporalMemory(); // TM class object
             Connections cn = new Connections();
-            Parameters p = getDefaultParameters(null, KEY.PERMANENCE_DECREMENT, 0.08);
+            Parameters p = getDefaultParameters(null, KEY.PERMANENCE_DECREMENT, 0.08); // Used Permanence decrement parameter 
+            
             p.apply(cn);
             tm.Init(cn);
 
-            int[] previousActiveColumns = { 0 };
+            int[] previousActiveColumns = { 0 }; 
             int[] activeColumns = { 1 };
             Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) };
             Cell[] burstingCells = { cn.GetCell(4), cn.GetCell(5) };
@@ -452,6 +453,8 @@ namespace UnitTestsProject
             Assert.AreEqual(0.3, as1.Permanence, 0.01);
             Assert.AreEqual(0.3, is1.Permanence, 0.01);
         }
+
+       
 
         [TestMethod]
         [TestCategory("Prod")]
@@ -494,7 +497,58 @@ namespace UnitTestsProject
             Assert.AreEqual(0.3, s4.Permanence, 0.01);
         }
 
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestNoChangeToMatchingSegmentsInPredictedTwoActiveColumn()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = getDefaultParameters();
+            p.apply(cn);
+            tm.Init(cn);
 
+            int[] previousActiveColumns = { 0 }; // zero active column
+            int[] activeColumns = { 1, 2 }; //two active columns
+            Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) }; //4 active cells in ) column
+            Cell expectedActiveCell = cn.GetCell(4); //next expected cell in previous column
+            List<Cell> expectedActiveCells = new List<Cell>(new Cell[] { expectedActiveCell }); //
+            Cell otherBurstingCell = cn.GetCell(5);
+
+            DistalDendrite activeSegment = cn.CreateDistalSegment(expectedActiveCell); //the Cell to which a segment is added
+            cn.CreateSynapse(activeSegment, previousActiveCells[0], 0.5);
+            cn.CreateSynapse(activeSegment, previousActiveCells[1], 0.5);
+            cn.CreateSynapse(activeSegment, previousActiveCells[2], 0.5);
+            cn.CreateSynapse(activeSegment, previousActiveCells[3], 0.5);
+
+            DistalDendrite matchingSegmentOnSameCell = cn.CreateDistalSegment(expectedActiveCell);
+            Synapse s1 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[0], 0.3);
+            Synapse s2 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[1], 0.3);
+            Synapse s3 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[2], 0.3);
+            Synapse s4 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[3], 0.3);
+
+            DistalDendrite matchingSegmentOnOtherCell = cn.CreateDistalSegment(otherBurstingCell);
+            Synapse s5 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[0], 0.3);
+            Synapse s6 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[1], 0.3);
+            Synapse s7 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[2], 0.3);
+            Synapse s8 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[3], 0.3);
+
+            ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
+            Assert.IsTrue(cc.PredictiveCells.SequenceEqual(expectedActiveCells));
+            tm.Compute(activeColumns, true);
+
+            Assert.AreEqual(0.3, s1.Permanence, 0.01);
+            Assert.AreEqual(0.3, s2.Permanence, 0.01);
+            Assert.AreEqual(0.3, s3.Permanence, 0.01);
+            Assert.AreEqual(0.3, s4.Permanence, 0.01);
+            Assert.AreEqual(0.3, s5.Permanence, 0.01);
+            Assert.AreEqual(0.3, s6.Permanence, 0.01);
+            Assert.AreEqual(0.3, s7.Permanence, 0.01);
+            Assert.AreEqual(0.3, s8.Permanence, 0.01);
+        }
+
+        /// <summary>
+        //Test a Un-change for non selected matching in bursting columns
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNoNewSegmentIfNotEnoughWinnerCells()
