@@ -472,7 +472,7 @@ namespace UnitTestsProject
             p.apply(cn);
             tm.Init(cn);
 
-            int[] previousActiveColumns = { 0, 1, 2, 4};
+            int[] previousActiveColumns = { 0, 1, 2 };
             int[] activeColumns = { 4 };
 
             ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
