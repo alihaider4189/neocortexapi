@@ -172,6 +172,24 @@ namespace UnitTestsProject
             Assert.IsTrue(cc.ActiveCells.SequenceEqual(burstingCells)); 
         }
 
+
+        [TestMethod]
+        public void TestBurstNotpredictedColumns()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = getDefaultParameters();
+            p.apply(cn);
+            tm.Init(cn);
+
+            int[] activeColumns = { 1,2 }; //Cureently Active column
+            IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); //Number of Cell Indexs
+
+            ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle; //COmpute class object 
+
+            Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
+        }
+
         [TestMethod]
         public void TestArrayNotContainingCells()
         {
