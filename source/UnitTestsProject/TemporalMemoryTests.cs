@@ -1361,6 +1361,26 @@ namespace UnitTestsProject
             }
         }
 
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestMostUsedCell()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = getDefaultParameters(null, KEY.COLUMN_DIMENSIONS, new int[] { 2 });
+            p = getDefaultParameters(p, KEY.CELLS_PER_COLUMN, 2);
+            p.apply(cn);
+            tm.Init(cn);
+
+            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
+            cn.CreateSynapse(dd, cn.GetCell(3), 0.3);
+
+            for (int i = 0; i < 100; i++)
+            {
+                Assert.AreNotEqual(0, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(0).Cells, cn.HtmConfig.Random).Index);
+            }
+        }
+
         /// <summary>
         /// Test adapt segment from syapse 
         /// </summary>
