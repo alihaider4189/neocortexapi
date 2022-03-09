@@ -172,6 +172,24 @@ namespace UnitTestsProject
             Assert.IsTrue(cc.ActiveCells.SequenceEqual(burstingCells)); 
         }
 
+
+        [TestMethod]
+        public void TestBurstNotpredictedColumns()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = getDefaultParameters();
+            p.apply(cn);
+            tm.Init(cn);
+
+            int[] activeColumns = { 1,2 }; //Cureently Active column
+            IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); //Number of Cell Indexs
+
+            ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle; //COmpute class object 
+
+            Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
+        }
+
         [TestMethod]
         public void TestArrayNotContainingCells()
         {
@@ -656,7 +674,7 @@ namespace UnitTestsProject
             p.apply(cn);
             tm.Init(cn);
 
-            int[] previousActiveColumns = { 0, 1, 2, 4};
+            int[] previousActiveColumns = { 0, 1, 2 };
             int[] activeColumns = { 4 };
 
             ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
@@ -1340,6 +1358,26 @@ namespace UnitTestsProject
             for (int i = 0; i < 100; i++)
             {
                 Assert.AreEqual(1, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(0).Cells, cn.HtmConfig.Random).Index);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestMostUsedCell()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = getDefaultParameters(null, KEY.COLUMN_DIMENSIONS, new int[] { 2 });
+            p = getDefaultParameters(p, KEY.CELLS_PER_COLUMN, 2);
+            p.apply(cn);
+            tm.Init(cn);
+
+            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
+            cn.CreateSynapse(dd, cn.GetCell(3), 0.3);
+
+            for (int i = 0; i < 100; i++)
+            {
+                Assert.AreNotEqual(0, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(0).Cells, cn.HtmConfig.Random).Index);
             }
         }
 
