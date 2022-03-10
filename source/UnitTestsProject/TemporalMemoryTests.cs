@@ -1293,27 +1293,7 @@ namespace UnitTestsProject
         }
 
 
-        /// <summary>
-        /// Random Single Cell Chose As a Winner
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void RandomSingleCellChoseAsAWinner()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = getDefaultParameters(null, KEY.MAX_NEW_SYNAPSE_COUNT, 4);
-            p = getDefaultParameters(p, KEY.PREDICTED_SEGMENT_DECREMENT, 0.02);
-            p = getDefaultParameters(p, KEY.INITIAL_PERMANENCE, 0.2);
-            p.apply(cn);
-            tm.Init(cn);
-
-
-
-
-
-
-        }
+       
 
         /// <summary>
         /// Return sum of all synapse 
@@ -1514,25 +1494,6 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Count How many synapse 
-        /// </summary>
-        /*[TestMethod]
-          [TestCategory("Prod")]
-          public void TestNumberOfSynapseCount() 
-          {
-              HtmConfig htmConfig = GetDefaultTMParameters();
-              Connections cn = new Connections(htmConfig);
-
-              TemporalMemory tm = new TemporalMemory();
-
-              tm.Init(cn);
-
-
-
-          }
-        */
-
-        /// <summary>
         //count number of cells in a columns
         /// </summary>
         [TestMethod]
@@ -1559,6 +1520,41 @@ namespace UnitTestsProject
             TemporalMemory temporalMemory = new TemporalMemory();
 
             temporalMemory.Init(connections);
+        }
+
+        /// <summary>
+        /// Activates all of the cells in an unpredicted active column
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestActivatedunpredictedActiveColumn()
+        {
+            HtmConfig htmConfig = GetDefaultTMParameters();
+            Connections cn = new Connections(htmConfig);
+            TemporalMemory tm = new TemporalMemory();
+            tm.Init(cn);
+
+            int[] prevActiveColumns = { 1, 2, 3, 4 };
+            ///     Synapse synapse = SynapseIndex;
+
+            ///    var parentColIndx = ;
+            ///? Column column = new Column(10,1,0.1,1);
+            IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
+            IList<Cell> preWinnerCells = cn.GetCellSet(new int[] { 0, 1 });
+            List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(43).DistalDendrites);
+            //List<DistalDendrite> matchingSegments = cn.CreateDistalSegment(cn.GetCell(43));
+            //BurstingResult burstingResult = new BurstingResult(PreActiveCells, );
+            var BustingResult = tm.BurstColumn(cn, column, matchingsegments,
+                                 preActiveCells, preWinnerCells, 0.10, 0.10,
+                                                cn.HtmConfig.Random, true);
+            // Assert.AreEqual(, BustingResult);
+
+
+
+
+
+
+
         }
     }
 }
