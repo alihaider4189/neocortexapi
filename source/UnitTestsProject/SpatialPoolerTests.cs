@@ -211,7 +211,7 @@ namespace  UnitTestsProject
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
         [TestCategory("Config")]
-        public void confirmSPConstruction3()
+        public void confirmSPConstruction2()
         {
             HtmConfig Config = SetupHtmConfigParameters();
             mem = new Connections(Config);
