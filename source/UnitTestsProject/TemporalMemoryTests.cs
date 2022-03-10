@@ -598,7 +598,7 @@ namespace UnitTestsProject
         /// <summary>
         /// check no New segment in winner cells of specified cell 
         /// </summary>
-        
+
         [TestMethod]
         [TestCategory("Prod")]
         public void TestNoNewSegmentIfNotEnoughWinnerCells1()

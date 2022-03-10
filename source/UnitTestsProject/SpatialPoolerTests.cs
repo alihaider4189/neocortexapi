@@ -12,21 +12,26 @@ using System.Threading.Tasks;
 
 namespace  UnitTestsProject
 {
+    /// <summary>
+    /// Test Spatial Pooler Class
+    /// </summary>
     [TestClass]
      public class SpatialPoolerTest
     {
         private Parameters parameters;
         private SpatialPooler sp;
         private Connections mem;
-
+        /// <summary>
+        /// Spatial Pooler parameters method
+        /// </summary>
         public void setupParameters()
         {
-            parameters = Parameters.getAllDefaultParameters();
-            parameters.Set(KEY.INPUT_DIMENSIONS, new int[] { 5 });
-            parameters.Set(KEY.COLUMN_DIMENSIONS, new int[] { 5 });
-            parameters.Set(KEY.POTENTIAL_RADIUS, 5);
-            parameters.Set(KEY.POTENTIAL_PCT, 0.5);
-            parameters.Set(KEY.GLOBAL_INHIBITION, false);
+            parameters = Parameters.getAllDefaultParameters(); ///parameter class object
+            parameters.Set(KEY.INPUT_DIMENSIONS, new int[] { 5 }); 
+            parameters.Set(KEY.COLUMN_DIMENSIONS, new int[] { 5 }); 
+            parameters.Set(KEY.POTENTIAL_RADIUS, 5); /// potentialRadius must be set to the inputWidth
+            parameters.Set(KEY.POTENTIAL_PCT, 0.5); ///nput bits are connected when the Spatial Pooling algorithm is initialized
+            parameters.Set(KEY.GLOBAL_INHIBITION, false); /// winning columns are selected with respect to their local neighborhoods
             parameters.Set(KEY.LOCAL_AREA_DENSITY, -1.0);
             parameters.Set(KEY.NUM_ACTIVE_COLUMNS_PER_INH_AREA, 3.0);
             parameters.Set(KEY.STIMULUS_THRESHOLD, 0.0);
@@ -39,6 +44,11 @@ namespace  UnitTestsProject
             parameters.Set(KEY.MAX_BOOST, 10.0);
             parameters.Set(KEY.RANDOM, new ThreadSafeRandom(42));
         }
+
+        /// <summary>
+        /// Implement a HTMconfig class
+        /// </summary>
+        /// <returns></returns>
         private HtmConfig SetupHtmConfigParameters()
         {
             var htmConfig = new HtmConfig(new int[] { 5 }, new int[] { 5 })
@@ -62,7 +72,9 @@ namespace  UnitTestsProject
 
             return htmConfig;
         }
-
+        /// <summary>
+        /// assign dummy elements to parameters used in SP
+        /// </summary>
         public void setupDefaultParameters()
         {
             parameters = Parameters.getAllDefaultParameters();
@@ -84,7 +96,10 @@ namespace  UnitTestsProject
             parameters.Set(KEY.SEED, 42);
             parameters.Set(KEY.RANDOM, new ThreadSafeRandom(42));
         }
-
+        /// <summary>
+        /// Assign values to SP parameters
+        /// </summary>
+        /// <returns></returns>
         private HtmConfig SetupHtmConfigDefaultParameters()
         {
             var htmConfig = new HtmConfig(new int[] { 32, 32 }, new int[] { 64, 64 })
@@ -108,7 +123,9 @@ namespace  UnitTestsProject
 
             return htmConfig;
         }
-
+        /// <summary>
+        /// Init Spatial pooler class method
+        /// </summary>
         private void InitTestSPInstance()
         {
             sp = new SpatialPoolerMT();
@@ -116,7 +133,9 @@ namespace  UnitTestsProject
             parameters.apply(mem);
             sp.Init(mem);
         }
-
+        /// <summary>
+        /// Test constructed spatial pooler parameters
+        /// </summary>
 
         [TestMethod]
         [TestCategory("UnitTest")]
@@ -146,6 +165,9 @@ namespace  UnitTestsProject
             Assert.AreEqual(5, mem.HtmConfig.NumInputs);
             Assert.AreEqual(5, mem.HtmConfig.NumColumns);
         }
+        /// <summary>
+        /// Test constructed spatial pooler parameters with different parameters
+        /// </summary>
 
         [TestMethod]
         [TestCategory("UnitTest")]
@@ -182,10 +204,12 @@ namespace  UnitTestsProject
 
 
 
-        /**
-         * Checks that feeding in the same input vector leads to polarized
-         * permanence values: either zeros or ones, but no fractions
-         */
+
+
+        /// <summary>
+        ///  Checks that feeding in the same input vector leads to polarized
+       /// permanence values: either zeros or ones, but no fractions
+        /// </summary>
         [TestMethod]
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
@@ -212,8 +236,8 @@ namespace  UnitTestsProject
             parameters.setMaxBoost(10);
             parameters.setSynPermTrimThreshold(0);
 
-            // This is 0.5 in Python version due to use of dense 
-            // permanence instead of sparse (as it should be)
+            /// This is 0.5 in Python version due to use of dense 
+            /// permanence instead of sparse (as it should be)
             parameters.setPotentialPct(1);
 
             parameters.setSynPermConnected(0.1);
@@ -239,7 +263,9 @@ namespace  UnitTestsProject
                 Assert.IsTrue(inputVector.SequenceEqual(permanences));
             }
         }
-
+        /// <summary>
+        /// Test compute method 
+        /// </summary>
         [TestMethod]
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
@@ -251,8 +277,8 @@ namespace  UnitTestsProject
             htmConfig.ColumnDimensions = new int[] { 5 };
             htmConfig.PotentialRadius = 5;
 
-            // This is 0.3 in Python version due to use of dense 
-            // permanence instead of sparse (as it should be)
+            /// This is 0.3 in Python version due to use of dense 
+            /// permanence instead of sparse (as it should be)
             htmConfig.PotentialPct = 0.5;
 
             htmConfig.GlobalInhibition = false;
@@ -267,8 +293,8 @@ namespace  UnitTestsProject
             htmConfig.MaxBoost = 10;
             htmConfig.SynPermTrimThreshold = 0;
 
-            // This is 0.5 in Python version due to use of dense 
-            // permanence instead of sparse (as it should be)
+            /// This is 0.5 in Python version due to use of dense 
+            /// permanence instead of sparse (as it should be)
             htmConfig.PotentialPct = 1;
 
             htmConfig.SynPermConnected = 0.1;
@@ -293,10 +319,11 @@ namespace  UnitTestsProject
             }
         }
 
-        /**
-         * Checks that columns only change the permanence values for 
-         * inputs that are within their potential pool
-         */
+         /// <summary>
+         /// Checks that columns only change the permanence values for 
+         ///inputs that are within their potential pool
+        /// </summary>
+
         [TestMethod]
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
