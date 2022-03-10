@@ -1406,6 +1406,29 @@ namespace UnitTestsProject
             Assert.AreEqual(0.8, s3.Permanence, 0.01);
         }
 
+
+        [TestMethod]
+        [TestCategory("Prod")]
+        public void TestAdaptSegment1()
+        {
+            TemporalMemory tm = new TemporalMemory();
+            Connections cn = new Connections();
+            Parameters p = Parameters.getAllDefaultParameters();
+            p.apply(cn);
+            tm.Init(cn);
+
+            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
+            Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.5);
+            Synapse s2 = cn.CreateSynapse(dd, cn.GetCell(37), 0.6);
+            Synapse s3 = cn.CreateSynapse(dd, cn.GetCell(477), 0.8);
+
+            TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23, 37 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
+
+            Assert.AreNotEqual(0.7, s1.Permanence, 0.01);
+            Assert.AreNotEqual(0.5, s2.Permanence, 0.01);
+            Assert.AreNotEqual(0.8, s3.Permanence, 0.01);
+        }
+
         /// <summary>
         /// Test adapt segment from syapse to Maximum
         /// </summary>
