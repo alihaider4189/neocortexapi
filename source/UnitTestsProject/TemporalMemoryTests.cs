@@ -202,7 +202,7 @@ namespace UnitTestsProject
             tm.Init(cn);
             
             int[] activeColumns = { 4, 5 };
-            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3 });
+            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3, });
 
             ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle;
 
@@ -212,6 +212,29 @@ namespace UnitTestsProject
         /// <summary>
         ///Test a active cell, winner cell and predictive cell in 0 active columns
         /// </summary>
+
+
+        [TestMethod]
+        public void TestArrayContainingMultipleCells()
+        {
+
+            HtmConfig htmConfig = GetDefaultTMParameters();
+            Connections cn = new Connections(htmConfig);
+
+            TemporalMemory tm = new TemporalMemory();
+
+            tm.Init(cn);
+
+            int[] activeColumns = { 2, 3, 4 };
+            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3, 4, 5 });
+
+            ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle;
+
+            Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
+        }
+
+
+
         [TestMethod]
         [TestCategory("Prod")]
         public void TestZeroActiveColumns()
@@ -521,6 +544,8 @@ namespace UnitTestsProject
         /// <summary>
         /// test a funtion to un change matching segment in predicted two active columns
         /// </summary>
+
+
        
         [TestMethod]
         [TestCategory("Prod")]
@@ -1307,11 +1332,6 @@ namespace UnitTestsProject
             p = getDefaultParameters(p, KEY.INITIAL_PERMANENCE, 0.2);
             p.apply(cn);
             tm.Init(cn);
-
-
-
-
-
 
         }
 
