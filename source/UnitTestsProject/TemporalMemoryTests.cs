@@ -1578,18 +1578,23 @@ namespace UnitTestsProject
             Connections cn = new Connections(htmConfig);
             TemporalMemory tm = new TemporalMemory();
             tm.Init(cn);
-
+           // Random random = cn.HtmConfig.Random;
             int[] prevActiveColumns = { 1, 2, 3, 4 };
-            Column column = cn.GetColumn(2);
+            Column column = cn.GetColumn(6);
             IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
             IList<Cell> preWinnerCells = cn.GetCellSet(new int[] { 0, 1 });
             List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(3).DistalDendrites);
             var BustingResult = tm.BurstColumn(cn, column, matchingsegments,
                                  preActiveCells, preWinnerCells, 0.10, 0.10,
-                                                cn.HtmConfig.Random, true);
+                                                new ThreadSafeRandom(100), true);
             // Assert.AreEqual(, BustingResult);
+            Assert.AreEqual(6, BustingResult.BestCell.ParentColumnIndex);
+            Assert.AreEqual(1, BustingResult.BestCell.DistalDendrites.Count());
+
 
 
         }
+
+
     }
 }
