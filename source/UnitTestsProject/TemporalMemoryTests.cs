@@ -1317,24 +1317,6 @@ namespace UnitTestsProject
             //Assert.IsTrue(segMapBefore.Keys.SequenceEqual(cn.GetSegmentMapping().Keys));
         }
 
-
-        /// <summary>
-        /// Random Single Cell Chose As a Winner
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void RandomSingleCellChoseAsAWinner()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = getDefaultParameters(null, KEY.MAX_NEW_SYNAPSE_COUNT, 4);
-            p = getDefaultParameters(p, KEY.PREDICTED_SEGMENT_DECREMENT, 0.02);
-            p = getDefaultParameters(p, KEY.INITIAL_PERMANENCE, 0.2);
-            p.apply(cn);
-            tm.Init(cn);
-
-        }
-
         /// <summary>
         /// Return sum of all synapse 
         /// </summary>
@@ -1598,24 +1580,14 @@ namespace UnitTestsProject
             tm.Init(cn);
 
             int[] prevActiveColumns = { 1, 2, 3, 4 };
-            ///     Synapse synapse = SynapseIndex;
-
-            ///    var parentColIndx = ;
-            ///? Column column = new Column(10,1,0.1,1);
+            Column column = cn.GetColumn(2);
             IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
             IList<Cell> preWinnerCells = cn.GetCellSet(new int[] { 0, 1 });
-            List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(43).DistalDendrites);
-            //List<DistalDendrite> matchingSegments = cn.CreateDistalSegment(cn.GetCell(43));
-            //BurstingResult burstingResult = new BurstingResult(PreActiveCells, );
+            List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(3).DistalDendrites);
             var BustingResult = tm.BurstColumn(cn, column, matchingsegments,
                                  preActiveCells, preWinnerCells, 0.10, 0.10,
                                                 cn.HtmConfig.Random, true);
             // Assert.AreEqual(, BustingResult);
-
-
-
-
-
 
 
         }
