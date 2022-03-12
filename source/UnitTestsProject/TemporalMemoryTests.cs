@@ -108,9 +108,9 @@ namespace UnitTestsProject
         //    //return JsonConvert.DeserializeObject<T>(serObj);
         //}
 
-        
+        /// <summary>
         /// Test whether two sequences are equal by comparing the elements
-       
+        /// <summary>
 
         [TestMethod]
         [TestCategory("Prod")]
@@ -172,7 +172,9 @@ namespace UnitTestsProject
             Assert.IsTrue(cc.ActiveCells.SequenceEqual(burstingCells)); 
         }
 
-
+        /// <summary>
+        ///Test a  if no cells have active segments, activate all the cells which cant be predicted in columns
+        /// </summary>
         [TestMethod]
         public void TestBurstNotpredictedColumns()
         {
@@ -190,6 +192,9 @@ namespace UnitTestsProject
             Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
         }
 
+        /// <summary>
+        ///Test an Array which has none cells in it
+        /// </summary>
         [TestMethod]
         public void TestArrayNotContainingCells()
         {
@@ -213,7 +218,9 @@ namespace UnitTestsProject
         ///Test a active cell, winner cell and predictive cell in 0 active columns
         /// </summary>
 
-
+        /// <summary>
+        ///Test an Array which has numerous active cells in it
+        /// </summary>
         [TestMethod]
         public void TestArrayContainingMultipleCells()
         {
@@ -234,7 +241,9 @@ namespace UnitTestsProject
         }
 
 
-
+        /// <summary>
+        ///Test a column which has zero active column
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestZeroActiveColumns()
@@ -255,11 +264,7 @@ namespace UnitTestsProject
             cn.CreateSynapse(activeSegment, cn.GetCell(3), 0.5);
 
             ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
-            //var resukt = tm.BurstColumn(cn,);
-            //
-            // result.r = 2
-            //result.t =3
-            //Assert.IsEqual(result.r,2);
+     
             Assert.IsFalse(cc.ActiveCells.Count == 0);
             Assert.IsFalse(cc.WinnerCells.Count == 0);
             Assert.IsFalse(cc.PredictiveCells.Count == 0);
@@ -1363,6 +1368,9 @@ namespace UnitTestsProject
             }
         }
 
+        /// <summary>
+        ///Test a active column where moost cell used 
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestMostUsedCell()
@@ -1408,7 +1416,9 @@ namespace UnitTestsProject
             Assert.AreEqual(0.8, s3.Permanence, 0.01);
         }
 
-
+        /// <summary>
+        /// Test adapt segment from syapse with different Permanence
+        /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void TestAdaptSegment1()
@@ -1503,8 +1513,8 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a Number of columns within columns dimension of 64x64
-        /// </summary>
+        ///Test a Number of columns within columns dimension of 64x64
+        /// <summary>
         [TestMethod]
         [TestCategory("Prod")]
         public void testNumberOfColumns()
@@ -1521,7 +1531,7 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //Test a Number of columns within columns dimension of 128x128
+        ///Test a Number of columns within columns dimension of 128x128
         /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
@@ -1539,7 +1549,7 @@ namespace UnitTestsProject
         }
 
         /// <summary>
-        //count number of cells in a columns
+        ///count number of cells in a columns
         /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
