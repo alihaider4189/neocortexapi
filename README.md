@@ -18,8 +18,8 @@ First important step in using of any algorithm is initialization of various para
 * **../ML21/22 28.  IImprove Unit Test (Spatial Pooler and Temporal Memory)/** 
 
 This directory has our Final Project codes 
-<a href="https://github.com/alihaider4189/neocortexapi/tree/UnitCodeMaster" target="_blank">Final Project Codes</a>
- 
+<a href="https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTests.cs"  target="_blank">Final Project Codes of Temporal Memory</a>
+ <a href="https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/SpatialPoolerTests.cs"  target="_blank">Final Project Codes of Spatial Pooler</a>
 * **../Documents/** 
 
 ```
