@@ -34,8 +34,8 @@ This directory contains Everything regards our presentation. (Remarks- Work in p
 # Project Plan
 The commitment of each person on program can be tracked by following table
 
-1. Read the all research papers and saw all relavent which is availble on youtube channel "Numenta" and from professor recorded lecture to made understading
-	of topic at some extent.
+1. Read the all research papers and saw all relavent videos which are availble on youtube channel "Numenta" and from professor recorded lecture to make 
+	understading of topic theoritically at some extent.
 
 2. Analysing the existing units tests of spatial pooler and Temporal memory by changing its values then debug it and observe the output of the function.
 3. While Analysing the code we usully go to defination of that line or variable see whats the actual meaning of that varible
