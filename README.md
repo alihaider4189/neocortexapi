@@ -68,6 +68,6 @@ The commitment of each person on program can be tracked by following table
 | Naveed Ahmed      | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=naveed401 |  |
 | Ali Raza Kharl    | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=alirazakharl |  |
 
-Please Review our work give us a feed back
+Please Review our work and give us a feed back
 
 
