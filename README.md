@@ -62,11 +62,11 @@ The commitment of each person on program can be tracked by following table
 # Contribution
 The commitment of each person on program can be tracked by following table
 
-| Name | Commitment on master branch |
+| Name | Commitment on master branch | Remarks |
 | :---------------: | :-------------: | :---------: |
-| Ali Haider        | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=alihaidershafique | 
-| Naveed Ahmed      | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=naveed401 |  
-| Ali Raza Kharl    | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=alirazakharl | 
+| Ali Haider        | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=alihaidershafique |  |
+| Naveed Ahmed      | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=naveed401 |  |
+| Ali Raza Kharl    | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=alirazakharl |  |
 
 If your want to contribute on this project please contact us. 
 
