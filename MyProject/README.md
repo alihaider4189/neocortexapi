@@ -1,117 +1,117 @@
-﻿		Project Title: 
-		ML 21/22 - 28 Improve Unit Test (Spatial Pooler and Temporal Memory)
+﻿#Project Title: 
+ML 21/22 - 28 Improve Unit Test (Spatial Pooler and Temporal Memory)
         
 
-		Introduction # 
+#Introduction # 
 
-			This repository is the open source implementation of the Hierarchical Temporal Memory in C#/.NET Core. 
-			This repository contains set of libraries around **NeoCortext** API .NET Core library. **NeoCortex** API focuses implementation
-			of _Hierarchical Temporal Memory Cortical Learning Algorithm_. Current version is first implementation of this algorithm on.
-			NET platform. It includes the **Spatial Pooler**, **Temporal Pooler**, various encoders and **CorticalNetwork**  algorithms.
-			Implementation of this library aligns to existing Python and JAVA implementation of HTM. Due similarities between JAVA and C#, 
-			current API of SpatialPooler in C# is very similar to JAVA API. However the implementation of future versions will include some
-			API changes to API style, which is additionally more aligned to C# community.
-			This repository also cotains first experimental implementation of distributed highly scalable HTM CLA based on Actor Programming Model.
-			The code published here is experimental code implemented during my research at daenet and Frankfurt University of Applied Sciences.
+This repository is the open source implementation of the Hierarchical Temporal Memory in C#/.NET Core. 
+This repository contains set of libraries around **NeoCortext** API .NET Core library. **NeoCortex** API focuses implementation
+of _Hierarchical Temporal Memory Cortical Learning Algorithm_. Current version is first implementation of this algorithm on.
+ platform. It includes the **Spatial Pooler**, **Temporal Pooler**, various encoders and **CorticalNetwork**  algorithms.
+Implementation of this library aligns to existing Python and JAVA implementation of HTM. Due similarities between JAVA and C#, 
+current API of SpatialPooler in C# is very similar to JAVA API. However the implementation of future versions will include some
+API changes to API style, which is additionally more aligned to C# community.
+This repository also cotains first experimental implementation of distributed highly scalable HTM CLA based on Actor Programming Model.
+The code published here is experimental code implemented during my research at daenet and Frankfurt University of Applied Sciences.
 
-			Group Name: 
-			Unit Code Master
+#Group Name: 
+Unit Code Master
 
-			SpatialPooler.md - NeoCortex Document folder
-			1) Spatial Pooler
-				Spatial Pooler (SP) is a learning algorithm that is designed to replicate the neurons functionality of human brain. Essentially, if a brain sees one thing multiple times, it is going to strengthen the synapses that react to the specific input result in the recognition of the object. Similarly, if several similar SDRs are presented to the SP algorithm, it will reinforce the columns that are active according to the on bits in the SDRs. If the number of training iterations is big enough, the SP will be able to identify the objects by producing different set of active columns within the specified size of SDR for different objects.
+SpatialPooler.md - NeoCortex Document folder
+#1) Spatial Pooler
+Spatial Pooler (SP) is a learning algorithm that is designed to replicate the neurons functionality of human brain. Essentially, if a brain sees one thing multiple times, it is going to strengthen the synapses that react to the specific input result in the recognition of the object. Similarly, if several similar SDRs are presented to the SP algorithm, it will reinforce the columns that are active according to the on bits in the SDRs. If the number of training iterations is big enough, the SP will be able to identify the objects by producing different set of active columns within the specified size of SDR for different objects.
 
-				The HTM spatial pooler represents a neurally inspired algorithm for learning sparse representations from noisy data streams in an online fashion. ([reference](https://www.frontiersin.org/articles/10.3389/fncom.2017.00111/full))
+The HTM spatial pooler represents a neurally inspired algorithm for learning sparse representations from noisy data streams in an online fashion. ([reference](https://www.frontiersin.org/articles/10.3389/fncom.2017.00111/full))
 
-				Right now, three versions of SP are implemented and considered:
+Right now, three versions of SP are implemented and considered:
 
-				Spatial Pooler algorithm requires 2 steps.
+Spatial Pooler algorithm requires 2 steps.
 
-				## 1. Parameters configuration
+## 1. Parameters configuration
 
-				   There are 2 ways to configure Spatial Pooler's parameters.
+ There are 2 ways to configure Spatial Pooler's parameters.
 
-				   1.1. Using `HtmConfig` (**Preferred** way to intialize `SpatialPooler` )
+ 1.1. Using `HtmConfig` (**Preferred** way to intialize `SpatialPooler` )
 
-				   ```csharp
-				   public void SpatialPoolerInit()
-				   {
-					   HtmConfig htmConfig = new HtmConfig()
-					   {
-						   InputDimensions = new int[] { 32, 32 },
-						   ColumnDimensions = new int[] { 64, 64 },
-						   PotentialRadius = 16,
-						   PotentialPct = 0.5,
-						   GlobalInhibition = false,
-						   LocalAreaDensity = -1.0,
+ ```csharp
+ public void SpatialPoolerInit()
+ {
+	HtmConfig htmConfig = new HtmConfig()
+	{
+	InputDimensions = new int[] { 32, 32 },
+	 ColumnDimensions = new int[] { 64, 64 },
+	 PotentialRadius = 16,
+	 PotentialPct = 0.5,
+	 GlobalInhibition = false,
+	 LocalAreaDensity = -1.0,
 
-						   // other parameters
-					   };
+	 // other parameters
+	}				   
+					  ;
 
-					   Connections connections = new Connections(htmConfig);
+ Connections connections = new Connections(htmConfig);
 
-					   SpatialPooler spatialPooler = new SpatialPoolerMT();
-					   spatialPooler.Init(connections);
-				   }
+ SpatialPooler spatialPooler = new SpatialPoolerMT();
+ spatialPooler.Init(connections);
+`}
 
-				      ```
+```
 
-						### Parameter desription
+### Parameter desription
 
-						| Parameter Name                  | Meaning                                                                                                                                                                                                                                                                                                          |
-						| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-						| POTENTIAL_RADIUS                | Defines the radius in number of input cells visible to column cells. It is important to choose this value, so every input neuron is connected to at least a single column. For example, if the input has 50000 bits and the column topology is 500, then you must choose some value larger than 50000/500 > 100. |
-						| POTENTIAL_PCT                   | Defines the percent of inputs withing potential radius, which can/should be connected to the column.                                                                                                                                                                                                             |
-						| GLOBAL_INHIBITION               | If TRUE global inhibition algorithm will be used. If FALSE local inhibition algorithm will be used.                                                                                                                                                                                                              |
-						| INHIBITION_RADIUS               | Defines neighbourhood radius of a column.                                                                                                                                                                                                                                                                        |
-						| LOCAL_AREA_DENSITY              | Density of active columns inside of local inhibition radius. If set on value < 0, explicit number of active columns (NUM_ACTIVE_COLUMNS_PER_INH_AREA) will be used.                                                                                                                                              |
-						| NUM_ACTIVE_COLUMNS_PER_INH_AREA | An alternate way to control the density of the active columns. If this value is specified then LOCAL_AREA_DENSITY must be less than 0, and vice versa.                                                                                                                                                           |
-						| STIMULUS_THRESHOLD              | One mini-column is active if its overlap exceeds overlap threshold  of connected synapses.                                                                                                                                                                                                                       |
-						| SYN_PERM_INACTIVE_DEC           | Decrement step of synapse permanence value withing every inactive cycle. It defines how fast the NeoCortex will forget learned patterns.                                                                                                                                                                         |
-						| SYN_PERM_ACTIVE_INC             | Increment step of connected synapse during learning process                                                                                                                                                                                                                                                      |
-						| SYN_PERM_CONNECTED              | Defines Connected Permanence Threshold  , which is a float value, which must be exceeded to declare synapse as connected.                                                                                                                                                                                        |
-						| DUTY_CYCLE_PERIOD               | Number of iterations. The period used to calculate duty cycles. Higher values make it take longer to respond to changes in boost. Shorter values make it more unstable and likely to oscillate.                                                                                                                  |
-						| MAX_BOOST                       | Maximum boost factor of a column.                                                                                                                                                                                                                                                                                |
+| Parameter Name                  | Meaning                                                                                                                                                                                                                                                                                                          |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POTENTIAL_RADIUS                | Defines the radius in number of input cells visible to column cells. It is important to choose this value, so every input neuron is connected to at least a single column. For example, if the input has 50000 bits and the column topology is 500, then you must choose some value larger than 50000/500 > 100. |
+| POTENTIAL_PCT                   | Defines the percent of inputs withing potential radius, which can/should be connected to the column.                                                                                                                                                                                                             |
+| GLOBAL_INHIBITION               | If TRUE global inhibition algorithm will be used. If FALSE local inhibition algorithm will be used.                                                                                                                                                                                                              |
+| INHIBITION_RADIUS               | Defines neighbourhood radius of a column.                                                                                                                                                                                                                                                                        |
+| LOCAL_AREA_DENSITY              | Density of active columns inside of local inhibition radius. If set on value < 0, explicit number of active columns (NUM_ACTIVE_COLUMNS_PER_INH_AREA) will be used.                                                                                                                                              |
+| NUM_ACTIVE_COLUMNS_PER_INH_AREA | An alternate way to control the density of the active columns. If this value is specified then LOCAL_AREA_DENSITY must be less than 0, and vice versa.                                                                                                                                                           |
+| STIMULUS_THRESHOLD              | One mini-column is active if its overlap exceeds overlap threshold  of connected synapses.                                                                                                                                                                                                                       |
+| SYN_PERM_INACTIVE_DEC           | Decrement step of synapse permanence value withing every inactive cycle. It defines how fast the NeoCortex will forget learned patterns.                                                                                                                                                                         |
+| SYN_PERM_ACTIVE_INC             | Increment step of connected synapse during learning process                                                                                                                                                                                                                                                      |
+| SYN_PERM_CONNECTED              | Defines Connected Permanence Threshold  , which is a float value, which must be exceeded to declare synapse as connected.                                                                                                                                                                                        |
+| DUTY_CYCLE_PERIOD               | Number of iterations. The period used to calculate duty cycles. Higher values make it take longer to respond to changes in boost. Shorter values make it more unstable and likely to oscillate.                                                                                                                  |
+| MAX_BOOST                       | Maximum boost factor of a column.                                                                                                                                                                                                                                                                                |
 
-						## 2. Invocation of `Compute()`
+## 2. Invocation of `Compute()`
 
-						   ```csharp
-						   public void TestSpatialPoolerCompute()
-						   {
-							   // parameters configuration
-							   ...
+ ```csharp
+ public void TestSpatialPoolerCompute()
+ {
+  // parameters configuration
+ ...
 
-							   // Invoke Compute()
-							   int[] outputArray = sp.Compute(inputArray, learn: true);
-						   }
-						   ```
+  // Invoke Compute()
+  int[] outputArray = sp.Compute(inputArray, learn: true);
+ }
+ ```
 
 				- 
 
-			This directory has our Final Project codes 
-			#SPATIAL POOLER TEST
-			https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/SpatialPoolerTests.cs
-			#TEMPORAL MEMORY TEST
-			https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTests.cs
+This directory has our Final Project codes [SPATIAL POOLER TEST](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/SpatialPoolerTests.cs)
+			
+This directory has our Final Project codes [TEMPORAL MEMORY TEST](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTests.cs)
+			
          
-				In the future version of **NeoCortexApi** this will be changed by using properties as commonly used in C#.
+In the future version of **NeoCortexApi** this will be changed by using properties as commonly used in C#.
 
-				Chosing right parameters for experiments is very complex task and it will not be further described in this guide.
-				Moreover, **SpatilaPooler** will use 1/4 of columns as inhibition inside of  inhibition (INHIBITION_RADIUS),
-				and 50% of columns inside of inhibition radius will be used as so called "winner columns". 
-				This set of parameter defines sparsity of algorithm
+Chosing right parameters for experiments is very complex task and it will not be further described in this guide.
+Moreover, **SpatilaPooler** will use 1/4 of columns as inhibition inside of  inhibition (INHIBITION_RADIUS),
+and 50% of columns inside of inhibition radius will be used as so called "winner columns". 
+This set of parameter defines sparsity of algorithm
 
-				This code snippet shows how to set described parameters:
+This code snippet shows how to set described parameters:
                    
-            2) Temporal Pooling:
-		        We can grasp the sequential pattern throughout time thanks to Temporal Pooling. 
-                It learns the current column's sequences from the Spatial Pooler and guesses what spatial pattern will appear next depending on 
-				the temporal context of each input.
+# 2) Temporal Pooling:
+ We can grasp the sequential pattern throughout time thanks to Temporal Pooling. 
+ It learns the current column's sequences from the Spatial Pooler and guesses what spatial pattern will appear next depending on 
+the temporal context of each input.
 		
-				The Temporal Memory algorithm learns sequences and makes predictions. In the Temporal Memory algorithm, when a cell
-                becomes active, it forms connections to other cells that were active just prior. Cells can then predict when they will become active
-                by looking at their connections. If all the cells do this, collectively they can store and recall sequences, and they can predict what
-                is likely to happen next.
+The Temporal Memory algorithm learns sequences and makes predictions. In the Temporal Memory algorithm, when a cell
+becomes active, it forms connections to other cells that were active just prior. Cells can then predict when they will become active
+ by looking at their connections. If all the cells do this, collectively they can store and recall sequences, and they can predict what
+is likely to happen next.
 
 
 
@@ -169,39 +169,38 @@
 			From these winner cells, other cells will have the predictive state when the connections to
 			the current active cells in the distal segment of those cells reach a certain value of ACTIVATION_THRESHOLD.
 
-			Bellow there are some  unit tests whicg we Implemented from existing one. In Below Test a function which uses Random
+**Below there are some  unit tests whicg we Implemented from existing one. In Below Test a function which uses Random **
 			
-		/// <summary>
-        /// Activates all of the cells in an unpredicted active column
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void TestActivatedunpredictedActiveColumn()
-        {
-            HtmConfig htmConfig = GetDefaultTMParameters();
-            Connections cn = new Connections(htmConfig);
-            TemporalMemory tm = new TemporalMemory();
-            tm.Init(cn);
-           // Random random = cn.HtmConfig.Random;
-            int[] prevActiveColumns = { 1, 2, 3, 4 };
-            Column column = cn.GetColumn(6);
-            IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
-            IList<Cell> preWinnerCells = cn.GetCellSet(new int[] { 0, 1 });
-            List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(3).DistalDendrites);
-            var BustingResult = tm.BurstColumn(cn, column, matchingsegments,
-                                 preActiveCells, preWinnerCells, 0.10, 0.10,
-                                                new ThreadSafeRandom(100), true);
-            // Assert.AreEqual(, BustingResult);
-            Assert.AreEqual(6, BustingResult.BestCell.ParentColumnIndex);
-            Assert.AreEqual(1, BustingResult.BestCell.DistalDendrites.Count());
+
+[TestMethod]
+[TestCategory("Prod")]
+public void TestActivatedunpredictedActiveColumn()
+{
+ HtmConfig htmConfig = GetDefaultTMParameters();
+ Connections cn = new Connections(htmConfig);
+ TemporalMemory tm = new TemporalMemory();
+ tm.Init(cn);
+ // Random random = cn.HtmConfig.Random;
+ int[] prevActiveColumns = { 1, 2, 3, 4 };
+   Column column = cn.GetColumn(6);
+   IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
+   IList<Cell> preWinnerCells = cn.GetCellSet(new int[] { 0, 1 });
+   List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(3).DistalDendrites);
+   var BustingResult = tm.BurstColumn(cn, column, matchingsegments,
+                       preActiveCells, preWinnerCells, 0.10, 0.10,
+                           new ThreadSafeRandom(100), true);
+   // Assert.AreEqual(, BustingResult);
+   Assert.AreEqual(6, BustingResult.BestCell.ParentColumnIndex);
+   Assert.AreEqual(1, BustingResult.BestCell.DistalDendrites.Count());
 
 
-		}
 
-		[TestMethod]
-        [TestCategory("Prod")]
-        public void testNumberOfColumns_1()
-        {
+}
+
+[TestMethod]
+[TestCategory("Prod")]
+public void testNumberOfColumns_1()
+{
             TemporalMemory tm = new TemporalMemory();
             Connections cn = new Connections();
             Parameters p = Parameters.getAllDefaultParameters();
@@ -211,7 +210,7 @@
             tm.Init(cn);
 
             Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns);
-        }
+}
 
 * **../Presentation/** 
 ```
