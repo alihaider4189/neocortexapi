@@ -171,7 +171,7 @@ is likely to happen next.
 
 **Below there are some  unit tests whicg we Implemented from existing one. In Below Test a function which uses Random **
 			
-
+```
 [TestMethod]
 [TestCategory("Prod")]
 public void TestActivatedunpredictedActiveColumn()
@@ -196,7 +196,9 @@ public void TestActivatedunpredictedActiveColumn()
 
 
 }
+```
 
+```
 [TestMethod]
 [TestCategory("Prod")]
 public void testNumberOfColumns_1()
@@ -211,7 +213,7 @@ public void testNumberOfColumns_1()
 
             Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns);
 }
-
+```
 * **../Presentation/** 
 ```
 This directory contains Everything regards our presentation. (Remarks- Work in progress)
