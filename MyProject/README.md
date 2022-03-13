@@ -163,7 +163,7 @@ With the prior state, the algorithm will choose winner cell for each column base
 From these winner cells, other cells will have the predictive state when the connections to
 the current active cells in the distal segment of those cells reach a certain value of ACTIVATION_THRESHOLD.
 
-**Below there are some  unit tests whicg we Implemented from existing one. In Below Test a function which uses Random **
+**../Below there are some  unit tests whicg we Implemented from existing one. In Below Test a function which uses Random/ **
 			
 
 ```cs
@@ -193,7 +193,7 @@ public void TestActivatedunpredictedActiveColumn()
 }
 ```
 
-```
+
 ```cs
 [TestMethod]
 [TestCategory("Prod")]
