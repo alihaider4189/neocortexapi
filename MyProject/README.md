@@ -165,8 +165,8 @@ the current active cells in the distal segment of those cells reach a certain va
 
 **Below there are some  unit tests whicg we Implemented from existing one. In Below Test a function which uses Random **
 			
-```
-cs
+
+```cs
 [TestMethod]
 [TestCategory("Prod")]
 public void TestActivatedunpredictedActiveColumn()
@@ -194,7 +194,7 @@ public void TestActivatedunpredictedActiveColumn()
 ```
 
 ```
-cs
+```cs
 [TestMethod]
 [TestCategory("Prod")]
 public void testNumberOfColumns_1()
