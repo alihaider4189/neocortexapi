@@ -268,8 +268,6 @@ https://www.insticc.org/node/TechnicalProgram/icpram/2021/presentationDetails/10
 # Contribution
 The commitment of each person on program can be tracked by following table
 
-# Contribute
-If your want to contribute on this project please contact us. 
 | Name | Commitment on master branch | Remarks |
 | :---------------: | :-------------: | :---------: |
 | Ali Haider        | https://github.com/alihaider4189/neocortexapi/commits/UnitCodeMaster?author=alihaidershafique |  |
