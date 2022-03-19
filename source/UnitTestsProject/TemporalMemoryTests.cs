@@ -1596,7 +1596,7 @@ namespace UnitTestsProject
             List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(3).DistalDendrites);
             var BustingResult = tm.BurstColumn(cn, column, matchingsegments,
                                  preActiveCells, preWinnerCells, 0.10, 0.10,
-                                                new ThreadSafeRandom(100), true);
+                                                new ThreadSafeRandom(100), true); 
             // Assert.AreEqual(, BustingResult);
             Assert.AreEqual(6, BustingResult.BestCell.ParentColumnIndex);
             Assert.AreEqual(1, BustingResult.BestCell.DistalDendrites.Count());
