@@ -8,7 +8,7 @@ UnitCodeMaster
 
 ## Getting started
 
-se-cloud-2021-2022
+se-cloud-2021-2022 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 See the notes down on how to deploy the project and experiment on a live system.
 NeoCortexApi is today built as .NET Standard 2.2 library. It contains all artefacts required to run **SpatialPooler**, **TemoralPooler** and few encoders.
