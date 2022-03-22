@@ -175,31 +175,6 @@ namespace UnitTestsProject
        
 
        
-        /// <summary>
-        ///Test a active cell, winner cell and predictive cell in 0 active columns
-        /// </summary>
-
-        /// <summary>
-        ///Test an Array which has numerous active cells in it
-        /// </summary>
-        [TestMethod]
-        public void TestArrayContainingMultipleCells()
-        {
-
-            HtmConfig htmConfig = GetDefaultTMParameters();
-            Connections cn = new Connections(htmConfig);
-
-            TemporalMemory tm = new TemporalMemory();
-
-            tm.Init(cn);
-
-            int[] activeColumns = { 2, 3, 4 };
-            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3, 4, 5 });
-
-            ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle;
-
-            Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
-        }
 
 
         /// <summary>
@@ -390,50 +365,7 @@ namespace UnitTestsProject
 
        
 
-        /// <summary>
-        /// test a funtion to unchange matching segment in predicted 0 active columns
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void TestNoChangeToMatchingSegmentsInPredictedActiveColumn()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = getDefaultParameters();
-            p.apply(cn);
-            tm.Init(cn);
-
-            int[] previousActiveColumns = { 0 };
-            int[] activeColumns = { 1 };
-            Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) };
-            Cell expectedActiveCell = cn.GetCell(4);
-            List<Cell> expectedActiveCells = new List<Cell>(new Cell[] { expectedActiveCell });
-            Cell otherBurstingCell = cn.GetCell(5);
-
-            DistalDendrite activeSegment = cn.CreateDistalSegment(expectedActiveCell);
-            cn.CreateSynapse(activeSegment, previousActiveCells[0], 0.5);
-            cn.CreateSynapse(activeSegment, previousActiveCells[1], 0.5);
-            cn.CreateSynapse(activeSegment, previousActiveCells[2], 0.5);
-            cn.CreateSynapse(activeSegment, previousActiveCells[3], 0.5);
-
-            DistalDendrite matchingSegmentOnSameCell = cn.CreateDistalSegment(expectedActiveCell);
-            Synapse s1 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[0], 0.3);
-            Synapse s2 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[1], 0.3);
-
-            DistalDendrite matchingSegmentOnOtherCell = cn.CreateDistalSegment(otherBurstingCell);
-            Synapse s3 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[0], 0.3);
-            Synapse s4 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[1], 0.3);
-
-            ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
-            Assert.IsTrue(cc.PredictiveCells.SequenceEqual(expectedActiveCells));
-            tm.Compute(activeColumns, true);
-
-            Assert.AreEqual(0.3, s1.Permanence, 0.01);
-            Assert.AreEqual(0.3, s2.Permanence, 0.01);
-            Assert.AreEqual(0.3, s3.Permanence, 0.01);
-            Assert.AreEqual(0.3, s4.Permanence, 0.01);
-        }
-
+   
         /// <summary>
         /// test a funtion to un change matching segment in predicted two active columns
         /// </summary>
@@ -1256,28 +1188,7 @@ namespace UnitTestsProject
             }
         }
 
-        /// <summary>
-        ///Test a active column where moost cell used 
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void TestMostUsedCell()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = getDefaultParameters(null, KEY.COLUMN_DIMENSIONS, new int[] { 2 });
-            p = getDefaultParameters(p, KEY.CELLS_PER_COLUMN, 2);
-            p.apply(cn);
-            tm.Init(cn);
-
-            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
-            cn.CreateSynapse(dd, cn.GetCell(3), 0.3);
-
-            for (int i = 0; i < 100; i++)
-            {
-                Assert.AreNotEqual(0, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(0).Cells, cn.HtmConfig.Random).Index);
-            }
-        }
+       
 
         /// <summary>
         /// Test adapt segment from syapse 
@@ -1304,31 +1215,7 @@ namespace UnitTestsProject
             Assert.AreEqual(0.8, s3.Permanence, 0.01);
         }
 
-        /// <summary>
-        /// Test adapt segment from syapse with different Permanence
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void TestAdaptSegment1()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = Parameters.getAllDefaultParameters();
-            p.apply(cn);
-            tm.Init(cn);
-
-            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
-            Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.5);
-            Synapse s2 = cn.CreateSynapse(dd, cn.GetCell(37), 0.6);
-            Synapse s3 = cn.CreateSynapse(dd, cn.GetCell(477), 0.8);
-
-            TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23, 37 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
-
-            Assert.AreNotEqual(0.7, s1.Permanence, 0.01);
-            Assert.AreNotEqual(0.5, s2.Permanence, 0.01);
-            Assert.AreNotEqual(0.8, s3.Permanence, 0.01);
-        }
-
+       
         /// <summary>
         /// Test adapt segment from syapse to Maximum
         /// </summary>
