@@ -100,7 +100,7 @@ namespace UnitTestsProject
             Connections cn = new Connections(htmConfig);
             TemporalMemory tm = new TemporalMemory();
             tm.Init(cn);
-           // Random random = cn.HtmConfig.Random;
+            Random random = cn.HtmConfig.Random;
             int[] prevActiveColumns = { 1, 2, 3, 4 };
             Column column = cn.GetColumn(6);
             IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
@@ -121,13 +121,13 @@ namespace UnitTestsProject
         /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
-        public void testNumberOfColumns_1()
+        public void testNumberOfColumns()
         {
             TemporalMemory tm = new TemporalMemory();
             Connections cn = new Connections();
             Parameters p = Parameters.getAllDefaultParameters();
-            p.Set(KEY.COLUMN_DIMENSIONS, new int[] { 128, 128 });
-            p.Set(KEY.CELLS_PER_COLUMN, 56);
+            p.Set(KEY.COLUMN_DIMENSIONS, new int[] { 256, 256 });
+            p.Set(KEY.CELLS_PER_COLUMN, 128);
             p.apply(cn);
             tm.Init(cn);
 
@@ -171,11 +171,11 @@ namespace UnitTestsProject
             Assert.IsTrue(cc2.PredictiveCells.Count == 0); ///lost of depolirized cells equal to 0
         }
         ///<summary>
-        /// Test adapt segment from syapse to mean 
+        /// Test adapt segment from syapse to centre 
         /// <Summary>
         [TestMethod]
         [TestCategory("Prod")]
-        public void TestAdaptSegmentToMean()
+        public void TestAdaptSegmentToCentre()
         {
             TemporalMemory tm = new TemporalMemory();
             Connections cn = new Connections();
