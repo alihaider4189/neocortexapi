@@ -1078,6 +1078,9 @@ namespace UnitTestsProject
         }
 
         /// <summary>
+
+
+        /// <summary>
         /// Connection between unchanged cells while learning
         /// </summary>
         [TestMethod]
