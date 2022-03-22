@@ -172,48 +172,9 @@ namespace UnitTestsProject
             Assert.IsTrue(cc.ActiveCells.SequenceEqual(burstingCells)); 
         }
 
-        /// <summary>
-        ///Test a  if no cells have active segments, activate all the cells which cant be predicted in columns
-        /// </summary>
-        [TestMethod]
-        public void TestBurstNotpredictedColumns()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = getDefaultParameters();
-            p.apply(cn);
-            tm.Init(cn);
+       
 
-            int[] activeColumns = { 1,2 }; //Cureently Active column
-            IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); //Number of Cell Indexs
-
-            ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle; //COmpute class object 
-
-            Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
-        }
-
-        /// <summary>
-        ///Test an Array which has none cells in it
-        /// </summary>
-        [TestMethod]
-        public void TestArrayNotContainingCells()
-        {
-            
-               HtmConfig htmConfig = GetDefaultTMParameters();
-            Connections cn = new Connections(htmConfig);
-
-            TemporalMemory tm = new TemporalMemory();
-
-            tm.Init(cn);
-            
-            int[] activeColumns = { 4, 5 };
-            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3, });
-
-            ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle;
-
-            Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
-        }
-
+       
         /// <summary>
         ///Test a active cell, winner cell and predictive cell in 0 active columns
         /// </summary>
@@ -276,43 +237,7 @@ namespace UnitTestsProject
             Assert.IsTrue(cc2.PredictiveCells.Count == 0);
         }
 
-        /// <summary>
-        ///Test a active cell, winner cell and predictive cell in two active columns
-        /// </summary>
-        
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void TestWithTwoActiveColumns()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = getDefaultParameters();
-            p.apply(cn);
-            tm.Init(cn);
-            
-            int[] previousActiveColumns = { 2,3 };
-            Cell cell5 = cn.GetCell(6);
-            Cell cell6 = cn.GetCell(7);
-
-            DistalDendrite activeSegment = cn.CreateDistalSegment(cell5);
-        //  DistalDendrite activeSegment1 = cn.CreateDistalSegment(cell6);
-            cn.CreateSynapse(activeSegment, cn.GetCell(0), 0.5);
-            cn.CreateSynapse(activeSegment, cn.GetCell(1), 0.5);
-            cn.CreateSynapse(activeSegment, cn.GetCell(2), 0.5);
-            cn.CreateSynapse(activeSegment, cn.GetCell(3), 0.5);
-
-          
-            ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
-            Assert.IsFalse(cc.ActiveCells.Count == 0);
-            Assert.IsFalse(cc.WinnerCells.Count == 0);
-            Assert.IsTrue(cc.PredictiveCells.Count == 0);
-
-            int[] zeroColumns = new int[0];
-            ComputeCycle cc2 = tm.Compute(zeroColumns, true) as ComputeCycle; ///learn = true
-            Assert.IsTrue(cc2.ActiveCells.Count == 0); /// Active cell ==0
-            Assert.IsTrue(cc2.WinnerCells.Count == 0);  /// wineer cell equal to 0
-            Assert.IsTrue(cc2.PredictiveCells.Count == 0); ///lost of depolirized cells equal to 0
-        }
+       
 
         /// <summary>
         ///Test a predicted cells which are always winner by comparing two elements
@@ -463,44 +388,7 @@ namespace UnitTestsProject
             Assert.AreEqual(0.3, is1.Permanence, 0.01);
         }
 
-        /// <summary>
-        ///Test a Un-change for non selected matching in no cells have active segments, activate 4 and 5 cell in the column
-        /// </summary>
-
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void TestNoChangeToNoTSelectedMatchingSegmentsInBurstingColumn()
-        {
-            TemporalMemory tm = new TemporalMemory(); // TM class object
-            Connections cn = new Connections();
-            Parameters p = getDefaultParameters(null, KEY.PERMANENCE_DECREMENT, 0.08); // Used Permanence decrement parameter 
-            
-            p.apply(cn);
-            tm.Init(cn);
-
-            int[] previousActiveColumns = { 0 }; 
-            int[] activeColumns = { 1 };
-            Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) };
-           // no cells have active segments, activate 4 and 5 cell in the column
-            Cell[] burstingCells = { cn.GetCell(4), cn.GetCell(5) };
-
-            DistalDendrite selectedMatchingSegment = cn.CreateDistalSegment(burstingCells[0]);
-            cn.CreateSynapse(selectedMatchingSegment, previousActiveCells[0], 0.3);
-            cn.CreateSynapse(selectedMatchingSegment, previousActiveCells[1], 0.3);
-            cn.CreateSynapse(selectedMatchingSegment, previousActiveCells[2], 0.3);
-            cn.CreateSynapse(selectedMatchingSegment, cn.GetCell(81), 0.3);
-
-            DistalDendrite otherMatchingSegment = cn.CreateDistalSegment(burstingCells[1]);
-            Synapse as1 = cn.CreateSynapse(otherMatchingSegment, previousActiveCells[0], 0.3);
-            Synapse is1 = cn.CreateSynapse(otherMatchingSegment, cn.GetCell(81), 0.3);
-
-            tm.Compute(previousActiveColumns, true);
-            tm.Compute(activeColumns, true);
-
-            Assert.AreEqual(0.3, as1.Permanence, 0.01);
-            Assert.AreEqual(0.3, is1.Permanence, 0.01);
-        }
-
+       
 
         /// <summary>
         /// test a funtion to unchange matching segment in predicted 0 active columns
@@ -1464,29 +1352,7 @@ namespace UnitTestsProject
             TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
             Assert.AreEqual(1.0, s1.Permanence, 0.1);
         }
-        ///<summary>
-        /// Test adapt segment from syapse to mid 
-        /// <Summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void TestAdaptSegmentToMid()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = Parameters.getAllDefaultParameters();
-            p.apply(cn);
-            tm.Init(cn);
-
-            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
-            Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.5); // central 
-            
-            TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
-            Assert.AreEqual(0.6, s1.Permanence, 0.1);
-            
-            // Now permanence should be at max
-            TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
-            Assert.AreEqual(0.7, s1.Permanence, 0.1);
-        }
+       
 
         /// <summary>
         /// Test adapt segment from syapse to minimum
@@ -1530,23 +1396,7 @@ namespace UnitTestsProject
             Assert.AreEqual(64 * 64, cn.HtmConfig.NumColumns);
         }
 
-        /// <summary>
-        ///Test a Number of columns within columns dimension of 128x128
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void testNumberOfColumns_1()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = Parameters.getAllDefaultParameters();
-            p.Set(KEY.COLUMN_DIMENSIONS, new int[] { 128, 128 });
-            p.Set(KEY.CELLS_PER_COLUMN, 56);
-            p.apply(cn);
-            tm.Init(cn);
-
-            Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns);
-        }
+       
 
         /// <summary>
         ///count number of cells in a columns
