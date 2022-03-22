@@ -203,41 +203,7 @@ namespace  UnitTestsProject
 
 
 
-        /**
-         * Checks that feeding in the same input vector leads to polarized
-         * permanence values: either zeros or ones, but no fractions
-         */
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [TestCategory("Prod")]
-        [TestCategory("Config")]
-        public void confirmSPConstruction2()
-        {
-            HtmConfig Config = SetupHtmConfigParameters();
-            mem = new Connections(Config);
-
-            sp = new SpatialPoolerMT();
-            sp.Init(mem);
-
-            Assert.AreEqual(5, mem.HtmConfig.InputDimensions[0]);
-            Assert.AreEqual(5, mem.HtmConfig.ColumnDimensions[0]);
-            Assert.AreEqual(5, mem.HtmConfig.PotentialRadius);
-            Assert.AreEqual(0.5, mem.HtmConfig.PotentialPct);//, 0);
-            Assert.AreEqual(false, mem.HtmConfig.GlobalInhibition);
-            Assert.AreEqual(-1.0, mem.HtmConfig.LocalAreaDensity);//, 0);
-            Assert.AreEqual(3, mem.HtmConfig.NumActiveColumnsPerInhArea);//, 0);
-            Assert.IsTrue(Math.Abs(1 - mem.HtmConfig.StimulusThreshold) <= 1);
-            Assert.AreEqual(0.01, mem.HtmConfig.SynPermInactiveDec);//, 0);
-            Assert.AreEqual(0.1, mem.HtmConfig.SynPermActiveInc);//, 0);
-            Assert.AreEqual(0.1, mem.HtmConfig.SynPermConnected);//, 0);
-            Assert.AreEqual(0.1, mem.HtmConfig.MinPctOverlapDutyCycles);//, 0);
-            Assert.AreEqual(0.1, mem.HtmConfig.MinPctActiveDutyCycles);//, 0);
-            Assert.AreEqual(10, mem.HtmConfig.DutyCyclePeriod);//, 0);
-            Assert.AreEqual(10.0, mem.HtmConfig.MaxBoost);//, 0);
-            Assert.AreEqual(42, mem.HtmConfig.RandomGenSeed);
-            Assert.AreEqual(5, mem.HtmConfig.NumInputs);
-            Assert.AreEqual(5, mem.HtmConfig.NumColumns);
-        }
+ 
 
         [TestMethod]
         [TestCategory("UnitTest")]
@@ -395,159 +361,12 @@ namespace  UnitTestsProject
             }
         }
 
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [TestCategory("Prod")]
-        public void testCompute2_1()
-        {
-            setupParameters();
-            parameters.setInputDimensions(new int[] { 10 });
-            parameters.setColumnDimensions(new int[] { 5 });
-            parameters.setPotentialRadius(3);
-            parameters.setPotentialPct(0.3);
-            parameters.setGlobalInhibition(false);
-            parameters.setLocalAreaDensity(-1.0);
-            parameters.setNumActiveColumnsPerInhArea(3);
-            parameters.setStimulusThreshold(1);
-            parameters.setSynPermInactiveDec(0.01);
-            parameters.setSynPermActiveInc(0.1);
-            parameters.setMinPctOverlapDutyCycles(0.1);
-            parameters.setMinPctActiveDutyCycles(0.1);
-            parameters.setDutyCyclePeriod(10);
-            parameters.setMaxBoost(10);
-            parameters.setSynPermConnected(0.1);
-
-            mem = new Connections();
-            parameters.apply(mem);
-
-
-
-            SpatialPoolerMock mock = new SpatialPoolerMock(new int[] { 0, 1, 2, 3, 4 });
-            mock.Init(mem);
-
-            int[] inputVector = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-            int[] activeArray = new int[] { 0, 0, 0, 0, 0 };
-            for (int i = 0; i < 20; i++)
-            {
-                mock.compute(inputVector, activeArray, true);
-            }
-
-            for (int i = 0; i < mem.HtmConfig.NumColumns; i++)
-            {
-                int[] permanences = ArrayUtils.ToIntArray(mem.GetColumn(i).ProximalDendrite.RFPool.GetDensePermanences(mem.HtmConfig.NumInputs));
-                //int[] potential = (int[])mem.getConnectedCounts().getSlice(i);
-                int[] potential = (int[])mem.GetColumn(i).ConnectedInputBits;
-                Assert.IsTrue(permanences.SequenceEqual(potential));
-            }
-        }
+  
         /**
          * When stimulusThreshold is 0, allow columns without any overlap to become
          * active. This test focuses on the global inhibition code path.
          */
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [TestCategory("Prod")]
-        public void testCompute3()
-        {
-            setupParameters();
-            parameters.Set(KEY.INPUT_DIMENSIONS, new int[] { 11 });
-            parameters.Set(KEY.COLUMN_DIMENSIONS, new int[] { 5 });
-            parameters.setPotentialRadius(6);
-
-            // This is 0.3 in Python version due to use of dense 
-            // permanence instead of sparse (as it should be)
-            parameters.setPotentialPct(0.6);
-            parameters.setGlobalInhibition(false);
-            parameters.setLocalAreaDensity(-1.0);
-            parameters.setNumActiveColumnsPerInhArea(3);
-            parameters.setStimulusThreshold(1);
-            parameters.setSynPermInactiveDec(0.01);
-            parameters.setSynPermActiveInc(0.1);
-            parameters.setMinPctOverlapDutyCycles(0.1);
-            parameters.setMinPctActiveDutyCycles(0.1);
-            parameters.setDutyCyclePeriod(10);
-            parameters.setMaxBoost(10);
-            parameters.setSynPermTrimThreshold(0);
-
-            /// This is 0.5 in Python version due to use of dense 
-            /// permanence instead of sparse (as it should be)
-            parameters.setPotentialPct(1);
-            parameters.setSynPermConnected(0.1);
-            sp = new SpatialPooler();
-            mem = new Connections();
-            parameters.apply(mem);
-
-            SpatialPoolerMock mock = new SpatialPoolerMock(new int[] { 0, 1, 2, 3, 4 });
-            mock.Init(mem);
-
-            int[] inputVector = new int[] { 1, 0, 1, 0, 1, 0, 0, 1, 1 };
-            int[] activeArray = new int[] { 0, 0, 0, 0, 0 };
-            for (int i = 0; i < 20; i++)
-            {
-                mock.compute(inputVector, activeArray, true);
-            }
-
-            for (int i = 0; i < mem.HtmConfig.NumColumns; i++)
-            {
-                int[] permanences = ArrayUtils.ToIntArray(mem.GetColumn(i).ProximalDendrite.RFPool.GetDensePermanences(mem.HtmConfig.NumInputs));
-
-                Assert.IsTrue(inputVector.SequenceEqual(permanences));
-            }
-        }
-        /// <summary>
-        /// Test compute method 
-        /// </summary>
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [TestCategory("Prod")]
-        [TestCategory("InitHtmConfig")]
-        public void testCompute3_1()
-        {
-            var htmConfig = SetupHtmConfigParameters();
-            htmConfig.InputDimensions = new int[] { 11 };
-            htmConfig.ColumnDimensions = new int[] { 5 };
-            htmConfig.PotentialRadius = 6;
-
-            /// This is 0.3 in Python version due to use of dense 
-            /// permanence instead of sparse (as it should be)
-            htmConfig.PotentialPct = 0.6;
-            htmConfig.GlobalInhibition = false;
-            htmConfig.LocalAreaDensity = -1.0;
-            htmConfig.NumActiveColumnsPerInhArea = 3;
-            htmConfig.StimulusThreshold = 1;
-            htmConfig.SynPermInactiveDec = 0.01;
-            htmConfig.SynPermActiveInc = 0.1;
-            htmConfig.MinPctOverlapDutyCycles = 0.1;
-            htmConfig.MinPctActiveDutyCycles = 0.1;
-            htmConfig.DutyCyclePeriod = 10;
-            htmConfig.MaxBoost = 10;
-            htmConfig.SynPermTrimThreshold = 0;
-
-            /// This is 0.5 in Python version due to use of dense 
-            /// permanence instead of sparse (as it should be)
-            htmConfig.PotentialPct = 1;
-
-            htmConfig.SynPermConnected = 0.1;
-
-            mem = new Connections(htmConfig);
-
-            SpatialPoolerMock mock = new SpatialPoolerMock(new int[] { 0, 1, 2, 3, 4 });
-            mock.Init(mem);
-
-            int[] inputVector = new int[] { 1, 0, 1, 0, 1, 0, 0, 1, 1 };
-            int[] activeArray = new int[] { 0, 0, 0, 0, 0 };
-            for (int i = 0; i < 20; i++)
-            {
-                mock.compute(inputVector, activeArray, true);
-            }
-
-            for (int i = 0; i < mem.HtmConfig.NumColumns; i++)
-            {
-                int[] permanences = ArrayUtils.ToIntArray(mem.GetColumn(i).ProximalDendrite.RFPool.GetDensePermanences(mem.HtmConfig.NumInputs));
-
-                Assert.IsTrue(inputVector.SequenceEqual(permanences));
-            }
-        }
+        
         [TestMethod]
         [TestCategory("UnitTest")]
         [TestCategory("Prod")]
@@ -576,71 +395,7 @@ namespace  UnitTestsProject
             Assert.IsTrue(3 == activeArray.Count(i => i > 0));//, ArrayUtils.INT_GREATER_THAN_0).length);
         }
 
-        /**
-         * When stimulusThreshold is 0, allow columns without any overlap to become
-         * active. This test focuses on the global inhibition code path.
-         */
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [TestCategory("Prod")]
-        [TestCategory("InitHtmConfig")]
-        public void TestZeroOverlap_NoStimulusThreshold_GlobalInhibition1()
-        {
-            int inputSize = 10;
-            int nColumns = 20;
-
-            HtmConfig defaultConfig = new HtmConfig(new int[] { inputSize }, new int[] { nColumns });
-            Connections cn = new Connections(defaultConfig);
-
-            var htmConfig = cn.HtmConfig;
-            htmConfig.PotentialRadius = 10;
-            htmConfig.GlobalInhibition = true;
-            htmConfig.NumActiveColumnsPerInhArea = 3.0;
-            htmConfig.StimulusThreshold = 0.0;
-            htmConfig.Random = new ThreadSafeRandom(42);
-            htmConfig.RandomGenSeed = 42;
-
-            SpatialPooler sp = new SpatialPooler();
-            sp.Init(cn);
-
-            int[] activeArray = new int[nColumns];
-            sp.compute(new int[inputSize], activeArray, true);
-
-            Assert.IsTrue(3 == activeArray.Count(i => i > 0));//, ArrayUtils.INT_GREATER_THAN_0).length);
-        }
-
-        /**
-         * When stimulusThreshold is > 0, don't allow columns without any overlap to
-         * become active. This test focuses on the global inhibition code path.
-         */
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [TestCategory("Prod")]
-        [TestCategory("InitHtmConfig")]
-        public void TestZeroOverlap_NoStimulusThreshold_GlobalInhibition1_1()
-        {
-            int inputSize = 10;
-            int nColumns = 20;
-
-            HtmConfig defaultConfig = new HtmConfig(new int[] { inputSize }, new int[] { nColumns });
-            Connections cn = new Connections(defaultConfig);
-
-            var htmConfig = cn.HtmConfig;
-            htmConfig.PotentialRadius = 10;
-            htmConfig.GlobalInhibition = true;
-            htmConfig.NumActiveColumnsPerInhArea = 3.0;
-            htmConfig.StimulusThreshold = 0.0;
-            htmConfig.Random = new ThreadSafeRandom(42);
-            htmConfig.RandomGenSeed = 42;
-
-            SpatialPooler sp = new SpatialPooler();
-            sp.Init(cn);
-
-            int[] activeArray = new int[nColumns];
-            sp.compute(new int[inputSize], activeArray, true);
-
-            Assert.IsTrue(3 == activeArray.Count(i => i > 0));//, ArrayUtils.INT_GREATER_THAN_0).length);
-        }
+     
 
         [TestMethod]
         [DataRow(PoolerMode.SingleThreaded)]
@@ -671,6 +426,8 @@ namespace  UnitTestsProject
 
             Assert.IsTrue(0 == activeArray.Count(i => i > 0));//, ArrayUtils.INT_GREATER_THAN_0).length);
         }
+
+ 
 
         [TestMethod]
         [TestCategory("UnitTest")]
