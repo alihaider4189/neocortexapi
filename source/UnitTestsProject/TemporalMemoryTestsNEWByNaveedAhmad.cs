@@ -55,6 +55,9 @@ namespace UnitTestsProject
             return retVal;
         }
 
+
+
+
         /// <summary>
         /// Implementation of HtmConfig Class
         /// </summary>
@@ -117,6 +120,9 @@ namespace UnitTestsProject
             Assert.AreNotEqual(0.8, s3.Permanence, 0.01);
         }
 
+
+
+
         /// <summary>
         ///Test a active cell, winner cell and predictive cell in 0 active columns
         /// </summary>
@@ -164,6 +170,10 @@ namespace UnitTestsProject
                 Assert.AreNotEqual(0, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(0).Cells, cn.HtmConfig.Random).Index);
             }
         }
+
+
+
+
         /// <summary>
         /// test a funtion to unchange matching segment in predicted 0 active columns
         /// </summary>
@@ -207,6 +217,9 @@ namespace UnitTestsProject
             Assert.AreEqual(0.3, s3.Permanence, 0.01);
             Assert.AreEqual(0.3, s4.Permanence, 0.01);
         }
+
+
+
         /// <summary>
         ///Test a  LinkedHashSet{T}  containing the Cell specified by the passed in indexes
         /// </summary>
@@ -226,6 +239,7 @@ namespace UnitTestsProject
 
             Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
         }
+        
 
 
 
