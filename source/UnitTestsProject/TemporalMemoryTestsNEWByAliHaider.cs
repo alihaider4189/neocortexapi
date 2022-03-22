@@ -96,16 +96,16 @@ namespace UnitTestsProject
         [TestCategory("Prod")]
         public void TestActivatedunpredictedActiveColumn()
         {
-            HtmConfig htmConfig = GetDefaultTMParameters();
+            HtmConfig htmConfig = GetDefaultTMParameters(); 
             Connections cn = new Connections(htmConfig);
             TemporalMemory tm = new TemporalMemory();
-            tm.Init(cn);
+            tm.Init(cn); ///use connection for specified object to build to implement algoarithm 
             Random random = cn.HtmConfig.Random;
-            int[] prevActiveColumns = { 1, 2, 3, 4 };
-            Column column = cn.GetColumn(6);
-            IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 });
-            IList<Cell> preWinnerCells = cn.GetCellSet(new int[] { 0, 1 });
-            List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(3).DistalDendrites);
+            int[] prevActiveColumns = { 1, 2, 3, 4 }; /// 
+            Column column = cn.GetColumn(6); /// Retrieve column 6 
+            IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); /// 4 pre-active cells
+            IList<Cell> preWinnerCells = cn.GetCellSet(new int[] { 0, 1 }); ///Pre- winners cells from pre avtive once
+            List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(3).DistalDendrites); ///Matching segment from Distal dentrite list
             var BustingResult = tm.BurstColumn(cn, column, matchingsegments,
                                  preActiveCells, preWinnerCells, 0.10, 0.10,
                                                 new ThreadSafeRandom(100), true); 
@@ -126,12 +126,12 @@ namespace UnitTestsProject
             TemporalMemory tm = new TemporalMemory();
             Connections cn = new Connections();
             Parameters p = Parameters.getAllDefaultParameters();
-            p.Set(KEY.COLUMN_DIMENSIONS, new int[] { 256, 256 });
-            p.Set(KEY.CELLS_PER_COLUMN, 128);
-            p.apply(cn);
-            tm.Init(cn);
+            p.Set(KEY.COLUMN_DIMENSIONS, new int[] { 256, 256 }); /// 256x256 column dimension
+            p.Set(KEY.CELLS_PER_COLUMN, 128); ///128 cells per column
+            p.apply(cn); ///Sets the fields specified by Parameters on the specified Connections object.
+            tm.Init(cn); 
 
-            Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns);
+            Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns); ///checking expected result from actual result by calling NUM COLUMN METHOD FROM connection class
         }
         /// <summary>
         ///Test a active cell, winner cell and predictive cell in two active columns
@@ -147,8 +147,8 @@ namespace UnitTestsProject
             p.apply(cn);
             tm.Init(cn);
 
-            int[] previousActiveColumns = { 2, 3 };
-            Cell cell5 = cn.GetCell(6);
+            int[] previousActiveColumns = { 2, 3 }; ///2 pre active cells
+            Cell cell5 = cn.GetCell(6); /// get cell 6 by calling connection method
             Cell cell6 = cn.GetCell(7);
 
             DistalDendrite activeSegment = cn.CreateDistalSegment(cell5);
