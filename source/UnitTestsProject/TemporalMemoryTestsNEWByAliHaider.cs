@@ -16,7 +16,7 @@ namespace UnitTestsProject
     /// </summary>
 
     [TestClass]
-    public class TemporalPoolerTestNEWByAliHaider
+    public class TemporalMemoryTestNEWByAliHaider
     {
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace UnitTestsProject
             p.apply(cn); ///Sets the fields specified by Parameters on the specified Connections object.
             tm.Init(cn); 
 
-            Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns); ///checking expected result from actual result by calling NUM COLUMN METHOD FROM connection class
+            Assert.AreEqual(256 * 256, cn.HtmConfig.NumColumns); ///checking expected result from actual result by calling NUM COLUMN METHOD FROM connection class
         }
         /// <summary>
         ///Test a active cell, winner cell and predictive cell in two active columns
