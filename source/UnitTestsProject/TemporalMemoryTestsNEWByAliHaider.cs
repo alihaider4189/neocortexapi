@@ -112,9 +112,6 @@ namespace UnitTestsProject
             // Assert.AreEqual(, BustingResult);
             Assert.AreEqual(6, BustingResult.BestCell.ParentColumnIndex);
             Assert.AreEqual(1, BustingResult.BestCell.DistalDendrites.Count());
-
-
-
         }
         /// <summary>
         ///Test a Number of columns within columns dimension of 128x128
@@ -292,7 +289,7 @@ namespace UnitTestsProject
 
             for (int i = 0; i < 10; i++)
             {
-                Assert.AreEqual(5, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(2).Cells, cn.HtmConfig.Random).Index);
+                Assert.AreEqual(4, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(2).Cells, cn.HtmConfig.Random).Index);
             }
             
         }

@@ -211,6 +211,7 @@ public void testNumberOfColumns_1()
 }
 ```
 * **../Presentation/** 
+
 ```
 This directory contains Everything regards our presentation. (Remarks- Work in progress)
 Following images show how **SpatialPooler** creates (encodes) Sparse Distributed Representation of MNIST images.
@@ -248,19 +249,19 @@ Continious Online Sequence Learning with HTM:
 https://www.mitpressjournals.org/doi/full/10.1162/NECO_a_00893#.WMBBGBLytE6
 
 # Papers and conference proceedings
-#### International Journal of Artificial Intelligence and Applications
+International Journal of Artificial Intelligence and Applications
 Scaling the HTM Spatial Pooler
 https://aircconline.com/abstract/ijaia/v11n4/11420ijaia07.html
 
-#### AIS 2020 - 6th International Conference on Artificial Intelligence and Soft Computing (AIS 2020), Helsinki
+AIS 2020 - 6th International Conference on Artificial Intelligence and Soft Computing (AIS 2020), Helsinki
 The Parallel HTM Spatial Pooler with Actor Model
 https://aircconline.com/csit/csit1006.pdf
 
-#### Symposium on Pattern Recognition and Applications - Rome, Italy
+Symposium on Pattern Recognition and Applications - Rome, Italy
 On the Relationship Between Input Sparsity and Noise Robustness in Hierarchical Temporal Memory Spatial Pooler 
 https://doi.org/10.1145/3393822.3432317
 
-#### International Conference on Pattern Recognition Applications and Methods - ICPRAM 2021
+International Conference on Pattern Recognition Applications and Methods - ICPRAM 2021
 ```
 
 Improved HTM Spatial Pooler with Homeostatic Plasticity Control (Awarded with: *Best Industrial Paper*)
