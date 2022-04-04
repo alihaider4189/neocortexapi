@@ -1,8 +1,7 @@
-** * Project Title: ***
-ML 21/22 - 28 Improve Unit Test (Spatial Pooler and Temporal Memory)
-        
+# Project Title:  ML 21/22 - 28 Improve Unit Test (Spatial Pooler and Temporal Memory)
+ ------------------------------------------------------------------------------       
 
-** Introduction ** 
+# Introduction :
 
 This repository is the open source implementation of the Hierarchical Temporal Memory in C#/.NET Core. 
 This repository contains set of libraries around **NeoCortext** API .NET Core library. **NeoCortex** API focuses implementation
@@ -14,11 +13,11 @@ API changes to API style, which is additionally more aligned to C# community.
 This repository also cotains first experimental implementation of distributed highly scalable HTM CLA based on Actor Programming Model.
 The code published here is experimental code implemented during my research at daenet and Frankfurt University of Applied Sciences.
 
-#Group Name: 
+# Group Name: 
 Unit Code Master
 
 SpatialPooler.md - NeoCortex Document folder
-** 1) Spatial Pooler **
+# 1) Spatial Pooler :
 Spatial Pooler (SP) is a learning algorithm that is designed to replicate the neurons functionality of human brain. Essentially, if a brain sees one thing multiple times, it is going to strengthen the synapses that react to the specific input result in the recognition of the object. Similarly, if several similar SDRs are presented to the SP algorithm, it will reinforce the columns that are active according to the on bits in the SDRs. If the number of training iterations is big enough, the SP will be able to identify the objects by producing different set of active columns within the specified size of SDR for different objects.
 
 The HTM spatial pooler represents a neurally inspired algorithm for learning sparse representations from noisy data streams in an online fashion. ([reference](https://www.frontiersin.org/articles/10.3389/fncom.2017.00111/full))
@@ -27,11 +26,11 @@ Right now, three versions of SP are implemented and considered:
 
 Spatial Pooler algorithm requires 2 steps.
 
-** 1. Parameters configuration **
+# 1. Parameters configuration **
 
  There are 2 ways to configure Spatial Pooler's parameters.
 
- 1.1. Using `HtmConfig` (**Preferred** way to intialize `SpatialPooler` )
+  # 1.1. Using `HtmConfig` (**Preferred** way to intialize `SpatialPooler` )
 
  ```csharp
  public void SpatialPoolerInit()
@@ -57,7 +56,7 @@ Spatial Pooler algorithm requires 2 steps.
 
 ```
 
-** Parameter desription **
+ # ** Parameter desription **
 
 | Parameter Name                  | Meaning                                                                                                                                                                                                                                                                                                          |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,7 +73,7 @@ Spatial Pooler algorithm requires 2 steps.
 | DUTY_CYCLE_PERIOD               | Number of iterations. The period used to calculate duty cycles. Higher values make it take longer to respond to changes in boost. Shorter values make it more unstable and likely to oscillate.                                                                                                                  |
 | MAX_BOOST                       | Maximum boost factor of a column.                                                                                                                                                                                                                                                                                |
 
-** 2. Invocation of `Compute()`**
+# ** 2. Invocation of `Compute()`**
 
  ```csharp
  public void TestSpatialPoolerCompute()
@@ -87,7 +86,7 @@ Spatial Pooler algorithm requires 2 steps.
  }
  ```
 
-**Individual Contribution **				- 
+# **Individual Contribution **				- 
 
 Ai Haider:[Member 1 ](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTestsNEWByAliHaider.cs)
 
@@ -165,7 +164,7 @@ With the prior state, the algorithm will choose winner cell for each column base
 From these winner cells, other cells will have the predictive state when the connections to
 the current active cells in the distal segment of those cells reach a certain value of ACTIVATION_THRESHOLD.
 
-**../Below there are some  unit tests whicg we Implemented from existing one. In Below Test a function which uses Random/ **
+# **../Below there are some  unit tests whicg we Implemented from existing one. In Below Test a function which uses Random/ **
 			
 
 ```cs
@@ -212,17 +211,10 @@ public void testNumberOfColumns_1()
             Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns);
 }
 ```
-* **../Presentation/*** 
+# * **../Presentation/*** 
 Presentation [PPt](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/MySEProject/Improve%20Unit%20Test(Spatial%20Pooler%20and%20Temproal%20Memory)/Documentation/Improve%20Unit%20Test%20(%20Spatial%20Pooler%20and%20Temporal%20Memory).pptx)
 
 ```
-
-
-SDR code of digit '3' by using of local inhibition and various receptive field (radius)
-![image.png](/.attachments/image-494af819-a46e-43ef-bf88-d39a2d8e8ca6.png)
-
-Same example by using of global inhibition mechanism:
-![image.png](/.attachments/image-6bb495b4-84a7-45dc-9199-37fc629b8e55.png)
 
 
 
