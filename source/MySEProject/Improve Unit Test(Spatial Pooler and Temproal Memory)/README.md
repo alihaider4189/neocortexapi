@@ -89,9 +89,9 @@ Spatial Pooler algorithm requires 2 steps.
 
 				- 
 
-This directory has our Final Project codes [SPATIAL POOLER TEST](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/SpatialPoolerTests.cs)
-			
-This directory has our Final Project codes [TEMPORAL MEMORY TEST](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTests.cs)
+Ai Haider:[Member 1 ](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTestsNEWByAliHaider.cs)
+Naveed Ahmed:[Member 2 ](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTestsNEWByNaveedAhmad.cs)
+Ali Raza Kharl:[Member 3](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/SpatialPoolerTestsNEWByAliRazaKharl.cs)
 			
          
 In the future version of **NeoCortexApi** this will be changed by using properties as commonly used in C#.
