@@ -1,4 +1,4 @@
-** Project Title: **
+** * Project Title: ***
 ML 21/22 - 28 Improve Unit Test (Spatial Pooler and Temporal Memory)
         
 
