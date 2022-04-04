@@ -1,8 +1,8 @@
-﻿#Project Title: 
+** Project Title: **
 ML 21/22 - 28 Improve Unit Test (Spatial Pooler and Temporal Memory)
         
 
-#Introduction # 
+** Introduction ** 
 
 This repository is the open source implementation of the Hierarchical Temporal Memory in C#/.NET Core. 
 This repository contains set of libraries around **NeoCortext** API .NET Core library. **NeoCortex** API focuses implementation
@@ -18,7 +18,7 @@ The code published here is experimental code implemented during my research at d
 Unit Code Master
 
 SpatialPooler.md - NeoCortex Document folder
-#1) Spatial Pooler
+** 1) Spatial Pooler **
 Spatial Pooler (SP) is a learning algorithm that is designed to replicate the neurons functionality of human brain. Essentially, if a brain sees one thing multiple times, it is going to strengthen the synapses that react to the specific input result in the recognition of the object. Similarly, if several similar SDRs are presented to the SP algorithm, it will reinforce the columns that are active according to the on bits in the SDRs. If the number of training iterations is big enough, the SP will be able to identify the objects by producing different set of active columns within the specified size of SDR for different objects.
 
 The HTM spatial pooler represents a neurally inspired algorithm for learning sparse representations from noisy data streams in an online fashion. ([reference](https://www.frontiersin.org/articles/10.3389/fncom.2017.00111/full))
@@ -27,7 +27,7 @@ Right now, three versions of SP are implemented and considered:
 
 Spatial Pooler algorithm requires 2 steps.
 
-## 1. Parameters configuration
+** 1. Parameters configuration **
 
  There are 2 ways to configure Spatial Pooler's parameters.
 
@@ -57,7 +57,7 @@ Spatial Pooler algorithm requires 2 steps.
 
 ```
 
-### Parameter desription
+** Parameter desription **
 
 | Parameter Name                  | Meaning                                                                                                                                                                                                                                                                                                          |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,7 +74,7 @@ Spatial Pooler algorithm requires 2 steps.
 | DUTY_CYCLE_PERIOD               | Number of iterations. The period used to calculate duty cycles. Higher values make it take longer to respond to changes in boost. Shorter values make it more unstable and likely to oscillate.                                                                                                                  |
 | MAX_BOOST                       | Maximum boost factor of a column.                                                                                                                                                                                                                                                                                |
 
-## 2. Invocation of `Compute()`
+** 2. Invocation of `Compute()`**
 
  ```csharp
  public void TestSpatialPoolerCompute()
@@ -87,10 +87,12 @@ Spatial Pooler algorithm requires 2 steps.
  }
  ```
 
-				- 
+**Individual Contribution **				- 
 
 Ai Haider:[Member 1 ](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTestsNEWByAliHaider.cs)
+
 Naveed Ahmed:[Member 2 ](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/TemporalMemoryTestsNEWByNaveedAhmad.cs)
+
 Ali Raza Kharl:[Member 3](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/UnitTestsProject/SpatialPoolerTestsNEWByAliRazaKharl.cs)
 			
          
@@ -210,11 +212,11 @@ public void testNumberOfColumns_1()
             Assert.AreEqual(128 * 128, cn.HtmConfig.NumColumns);
 }
 ```
-* **../Presentation/** 
+* **../Presentation/*** 
+Presentation [PPt](https://github.com/alihaider4189/neocortexapi/blob/UnitCodeMaster/source/MySEProject/Improve%20Unit%20Test(Spatial%20Pooler%20and%20Temproal%20Memory)/Documentation/Improve%20Unit%20Test%20(%20Spatial%20Pooler%20and%20Temporal%20Memory).pptx)
 
 ```
-This directory contains Everything regards our presentation. (Remarks- Work in progress)
-Following images show how **SpatialPooler** creates (encodes) Sparse Distributed Representation of MNIST images.
+
 
 SDR code of digit '3' by using of local inhibition and various receptive field (radius)
 ![image.png](/.attachments/image-494af819-a46e-43ef-bf88-d39a2d8e8ca6.png)
@@ -222,10 +224,9 @@ SDR code of digit '3' by using of local inhibition and various receptive field (
 Same example by using of global inhibition mechanism:
 ![image.png](/.attachments/image-6bb495b4-84a7-45dc-9199-37fc629b8e55.png)
 
-Following example shows encoding of different representations of digit '1' by using same set of parameters shown in code snippet above.
-![image.png](/.attachments/image-da7ddc5c-ff0a-493a-a0d7-54b765b0aaa1.png)
 
-# References
+
+** References **
 
 HTM School:
 https://www.youtube.com/playlist?list=PL3yXMgtrZmDqhsFQzwUC9V8MeeVOQ7eZ9&app=desktop
@@ -248,7 +249,7 @@ https://numenta.com/assets/pdf/temporal-memory-algorithm/Temporal-Memory-Algorit
 Continious Online Sequence Learning with HTM:
 https://www.mitpressjournals.org/doi/full/10.1162/NECO_a_00893#.WMBBGBLytE6
 
-# Papers and conference proceedings
+** Papers and conference proceedings **
 International Journal of Artificial Intelligence and Applications
 Scaling the HTM Spatial Pooler
 https://aircconline.com/abstract/ijaia/v11n4/11420ijaia07.html
@@ -266,7 +267,7 @@ International Conference on Pattern Recognition Applications and Methods - ICPRA
 
 Improved HTM Spatial Pooler with Homeostatic Plasticity Control (Awarded with: *Best Industrial Paper*)
 https://www.insticc.org/node/TechnicalProgram/icpram/2021/presentationDetails/103142
-# Contribution
+** Contribution **
 The commitment of each person on program can be tracked by following table
 
 | Name | Commitment on master branch | Remarks |
