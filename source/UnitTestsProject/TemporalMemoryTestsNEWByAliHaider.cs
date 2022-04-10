@@ -19,20 +19,7 @@ namespace UnitTestsProject
     public class TemporalMemoryTestNEWByAliHaider
     {
 
-        /// <summary>
-        /// Return Boolean value of generic collections Array 
-        /// </summary>
-        private static bool areDisjoined<T>(ICollection<T> arr1, ICollection<T> arr2)
-        {
-            foreach (var item in arr1)
-            {
-                if (arr2.Contains(item))
-                    return false;
-            }
-
-            return true;
-        }
-
+       
         /// <summary>
         /// Implementation of Parameters Class
         /// </summary>
@@ -106,6 +93,7 @@ namespace UnitTestsProject
             IList<Cell> preActiveCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); /// 4 pre-active cells
             IList<Cell> preWinnerCells = cn.GetCellSet(new int[] { 0, 1 }); ///Pre- winners cells from pre avtive once
             List<DistalDendrite> matchingsegments = new List<DistalDendrite>(cn.GetCell(3).DistalDendrites); ///Matching segment from Distal dentrite list
+            //We have passed Random value into Burst column function of Temporal memory algorithm
             var BustingResult = tm.BurstColumn(cn, column, matchingsegments,
                                  preActiveCells, preWinnerCells, 0.10, 0.10,
                                                 new ThreadSafeRandom(100), true); 
@@ -113,23 +101,7 @@ namespace UnitTestsProject
             Assert.AreEqual(6, BustingResult.BestCell.ParentColumnIndex);
             Assert.AreEqual(1, BustingResult.BestCell.DistalDendrites.Count());
         }
-        /// <summary>
-        ///Test a Number of columns within columns dimension of 128x128
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void testNumberOfColumns()
-        {
-            TemporalMemory tm = new TemporalMemory();
-            Connections cn = new Connections();
-            Parameters p = Parameters.getAllDefaultParameters();
-            p.Set(KEY.COLUMN_DIMENSIONS, new int[] { 256, 256 }); /// 256x256 column dimension
-            p.Set(KEY.CELLS_PER_COLUMN, 128); ///128 cells per column
-            p.apply(cn); ///Sets the fields specified by Parameters on the specified Connections object.
-            tm.Init(cn); 
-
-            Assert.AreEqual(256 * 256, cn.HtmConfig.NumColumns); ///checking expected result from actual result by calling NUM COLUMN METHOD FROM connection class
-        }
+       
         /// <summary>
         ///Test a active cell, winner cell and predictive cell in two active columns
         /// </summary>
@@ -148,18 +120,18 @@ namespace UnitTestsProject
             Cell cell5 = cn.GetCell(6); /// get cell 6 by calling connection method
             Cell cell6 = cn.GetCell(7);
 
-            DistalDendrite activeSegment = cn.CreateDistalSegment(cell5);
+            DistalDendrite activeSegment = cn.CreateDistalSegment(cell5); /// Created a Distal dendrite segment of a cell5
             //  DistalDendrite activeSegment1 = cn.CreateDistalSegment(cell6);
-            cn.CreateSynapse(activeSegment, cn.GetCell(0), 0.5);
-            cn.CreateSynapse(activeSegment, cn.GetCell(1), 0.5);
-            cn.CreateSynapse(activeSegment, cn.GetCell(2), 0.5);
-            cn.CreateSynapse(activeSegment, cn.GetCell(3), 0.5);
+            cn.CreateSynapse(activeSegment, cn.GetCell(0), 0.5); /// Created a synapse on a distal segment of a cell index 0
+            cn.CreateSynapse(activeSegment, cn.GetCell(1), 0.5); /// Created a synapse on a distal segment of a cell index 1
+            cn.CreateSynapse(activeSegment, cn.GetCell(2), 0.5); /// Created a synapse on a distal segment of a cell index 2
+            cn.CreateSynapse(activeSegment, cn.GetCell(3), 0.5); /// Created a synapse on a distal segment of a cell index 3
 
 
             ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
-            Assert.IsFalse(cc.ActiveCells.Count == 0);
-            Assert.IsFalse(cc.WinnerCells.Count == 0);
-            Assert.IsTrue(cc.PredictiveCells.Count == 0);
+            Assert.IsFalse(cc.ActiveCells.Count == 0); ///  count a active cell from preciously active column
+            Assert.IsFalse(cc.WinnerCells.Count == 0); ///   count a winner cell from preciously active column
+            Assert.IsTrue(cc.PredictiveCells.Count == 0); ///   count a predictive cell from preciously active column
 
             int[] zeroColumns = new int[0];
             ComputeCycle cc2 = tm.Compute(zeroColumns, true) as ComputeCycle; ///learn = true
@@ -180,13 +152,16 @@ namespace UnitTestsProject
             p.apply(cn);
             tm.Init(cn);
 
-            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
-            Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.5); // central 
+            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0)); /// Create a distal segment of a cell index 0 to learn sequence
+            Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.5); /// create a synapse on a dital segment to get cell index 23 
 
+          /// get a permanence 0.6 of the segment's synapse if the synapse's presynaptic cell index 23 was active. 
+          /// If it was not active, then it will decrement the permanence to 0.1
             TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
             Assert.AreEqual(0.6, s1.Permanence, 0.1);
 
-            // Now permanence should be at mean
+         /// get a permanence 0.7 of the segment's synapse if the synapse's presynaptic cell index 23 was active. 
+         /// If it was not active, then it will decrement the permanence to 0.1
             TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
             Assert.AreEqual(0.7, s1.Permanence, 0.1);
         }
@@ -205,11 +180,11 @@ namespace UnitTestsProject
 
             tm.Init(cn);
 
-            int[] activeColumns = { 4, 5 };
-            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3, });
+            int[] activeColumns = { 4, 5 }; ///two active columns 4 and 5
+            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3, }); ///get bursting cell of a index 0,1,2,3
 
             ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle;
-
+          ///get active cells from bursting cells and its should be null
             Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
         }
 
@@ -227,49 +202,13 @@ namespace UnitTestsProject
             tm.Init(cn);
 
             int[] activeColumns = { 1, 2 }; //Cureently Active column
-            IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); //Number of Cell Indexs
+            IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); //Number of Cell Index
 
             ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle; //COmpute class object 
 
             Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
         }
-        /// <summary>
-        ///Test a Un-change for non selected matching in no cells have active segments, activate 4 and 5 cell in the column
-        /// </summary>
-
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void TestNoChangeToNoTSelectedMatchingSegmentsInBurstingColumn()
-        {
-            TemporalMemory tm = new TemporalMemory(); // TM class object
-            Connections cn = new Connections();
-            Parameters p = getDefaultParameters(null, KEY.PERMANENCE_DECREMENT, 0.08); // Used Permanence decrement parameter 
-
-            p.apply(cn);
-            tm.Init(cn);
-
-            int[] previousActiveColumns = { 0 };
-            int[] activeColumns = { 1 };
-            Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) };
-            // no cells have active segments, activate 4 and 5 cell in the column
-            Cell[] burstingCells = { cn.GetCell(4), cn.GetCell(5) };
-
-            DistalDendrite selectedMatchingSegment = cn.CreateDistalSegment(burstingCells[0]);
-            cn.CreateSynapse(selectedMatchingSegment, previousActiveCells[0], 0.3);
-            cn.CreateSynapse(selectedMatchingSegment, previousActiveCells[1], 0.3);
-            cn.CreateSynapse(selectedMatchingSegment, previousActiveCells[2], 0.3);
-            cn.CreateSynapse(selectedMatchingSegment, cn.GetCell(81), 0.3);
-
-            DistalDendrite otherMatchingSegment = cn.CreateDistalSegment(burstingCells[1]);
-            Synapse as1 = cn.CreateSynapse(otherMatchingSegment, previousActiveCells[0], 0.3);
-            Synapse is1 = cn.CreateSynapse(otherMatchingSegment, cn.GetCell(81), 0.3);
-
-            tm.Compute(previousActiveColumns, true);
-            tm.Compute(activeColumns, true);
-
-            Assert.AreEqual(0.3, as1.Permanence, 0.01);
-            Assert.AreEqual(0.3, is1.Permanence, 0.01);
-        }
+      
         /// <summary>
         ///Test a active column Where most used cell in a column and after every test its alter the cell
         /// </summary>
@@ -279,18 +218,16 @@ namespace UnitTestsProject
         {
             TemporalMemory tm = new TemporalMemory();
             Connections cn = new Connections();
-            Parameters p = getDefaultParameters(null, KEY.COLUMN_DIMENSIONS, new int[] { 3 });
-            p = getDefaultParameters(p, KEY.CELLS_PER_COLUMN, 2);
+            Parameters p = getDefaultParameters(null, KEY.COLUMN_DIMENSIONS, new int[] { 2 }); /// column dimension set to 3
+            p = getDefaultParameters(p, KEY.CELLS_PER_COLUMN, 2); /// 2 cell per column
             p.apply(cn);
             tm.Init(cn);
 
-            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(1));
-            cn.CreateSynapse(dd, cn.GetCell(0), 0.30);
+            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(1)); /// Created a Distal dendrite segment of a cell index 1 
+            cn.CreateSynapse(dd, cn.GetCell(0), 0.30); /// Create a synapse on a distal segment of a cell index 0
 
-            for (int i = 0; i < 10; i++)
-            {
-                Assert.AreEqual(4, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(2).Cells, cn.HtmConfig.Random).Index);
-            }
+             Assert.AreEqual(3, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(1).Cells, cn.HtmConfig.Random).Index);
+            
             
         }
 
