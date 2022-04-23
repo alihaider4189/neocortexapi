@@ -96,7 +96,7 @@ namespace UnitTestsProject
 
 
         /// <summary>
-        /// Test adapt segment from syapse with different Permanence
+        /// Test adapt segment from synapse with different Permanence.
         /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
@@ -106,29 +106,26 @@ namespace UnitTestsProject
             Connections cn = new Connections();
             Parameters p = Parameters.getAllDefaultParameters();
             p.apply(cn);
-            tm.Init(cn);
+            tm.Init(cn); // use connection for specified object to build to implement algoarithm.
 
-            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
-            Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.5);
-            Synapse s2 = cn.CreateSynapse(dd, cn.GetCell(37), 0.6);
-            Synapse s3 = cn.CreateSynapse(dd, cn.GetCell(477), 0.8);
+            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));/// Created a Distal dendrite segment of a cell (0).
+            Synapse s1 = cn.CreateSynapse(dd, cn.GetCell(23), 0.5);/// Creating Synapse for Cell(23) by Calling Connection Mathod.
+            Synapse s2 = cn.CreateSynapse(dd, cn.GetCell(37), 0.6);/// Creating Synapse for Cell(37) by Calling Connection Mathod.
+            Synapse s3 = cn.CreateSynapse(dd, cn.GetCell(477), 0.8);/// Creating Synapse for Cell(477) by Calling Connection Mathod.
 
             TemporalMemory.AdaptSegment(cn, dd, cn.GetCellSet(new int[] { 23, 37 }), cn.HtmConfig.PermanenceIncrement, cn.HtmConfig.PermanenceDecrement);
-
-            Assert.AreNotEqual(0.7, s1.Permanence, 0.01);
-            Assert.AreNotEqual(0.5, s2.Permanence, 0.01);
-            Assert.AreNotEqual(0.8, s3.Permanence, 0.01);
+            Assert.AreNotEqual(0.7, s1.Permanence, 0.01);//Asserting the values for Segment1.
+            Assert.AreNotEqual(0.5, s2.Permanence, 0.01);//Asserting the values for Segment2.
+            Assert.AreNotEqual(0.8, s3.Permanence, 0.01);//Asserting the values for Segment3.
         }
 
 
 
 
-        /// <summary>
-        ///Test a active cell, winner cell and predictive cell in 0 active columns
-        /// </summary>
+        
 
         /// <summary>
-        ///Test an Array which has numerous active cells in it
+        ///Test an Array which has numerous active cells in it.
         /// </summary>
         [TestMethod]
         public void TestArrayContainingMultipleCells()
@@ -139,17 +136,17 @@ namespace UnitTestsProject
 
             TemporalMemory tm = new TemporalMemory();
 
-            tm.Init(cn);
+            tm.Init(cn);// use connection for specified object to build to implement algoarithm.
 
-            int[] activeColumns = { 2, 3, 4 };
-            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3, 4, 5 });
+            int[] activeColumns = { 2, 3, 4 };//Mutlipe Active Columns inside an array.
+            Cell[] burstingCells = cn.GetCells(new int[] { 0, 1, 2, 3, 4, 5 });//Test an array containing multiple cells.
 
-            ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle;
+            ComputeCycle cc = tm.Compute(activeColumns, true) as ComputeCycle;//Computing Active Columns inside the Array.
 
             Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
         }
         /// <summary>
-        ///Test a active column where most cell used 
+        ///Test a active column where most cell used. 
         /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
@@ -157,15 +154,15 @@ namespace UnitTestsProject
         {
             TemporalMemory tm = new TemporalMemory();
             Connections cn = new Connections();
-            Parameters p = getDefaultParameters(null, KEY.COLUMN_DIMENSIONS, new int[] { 2 });
-            p = getDefaultParameters(p, KEY.CELLS_PER_COLUMN, 2);
+            Parameters p = getDefaultParameters(null, KEY.COLUMN_DIMENSIONS, new int[] { 2 });// One active column which is mostly used (2).
+            p = getDefaultParameters(p, KEY.CELLS_PER_COLUMN, 2);//Getting default Parameters for most used cell.
             p.apply(cn);
-            tm.Init(cn);
+            tm.Init(cn);//use connection for specified object to build to implement the algoarithm.
 
-            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));
-            cn.CreateSynapse(dd, cn.GetCell(3), 0.3);
+            DistalDendrite dd = cn.CreateDistalSegment(cn.GetCell(0));//Creating a DistalDendrite for the cell.
+            cn.CreateSynapse(dd, cn.GetCell(2), 0.2);//Created a synapse on a distal segment of a cell index 2
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 100; i++)//Applaying for loop on it.
             {
                 Assert.AreNotEqual(0, TemporalMemory.GetLeastUsedCell(cn, cn.GetColumn(0).Cells, cn.HtmConfig.Random).Index);
             }
@@ -175,7 +172,7 @@ namespace UnitTestsProject
 
 
         /// <summary>
-        /// test a funtion to unchange matching segment in predicted 0 active columns
+        /// test a funtion to unchange matching segment in predicted 0 active columns.
         /// </summary>
         [TestMethod]
         [TestCategory("Prod")]
@@ -185,43 +182,43 @@ namespace UnitTestsProject
             Connections cn = new Connections();
             Parameters p = getDefaultParameters();
             p.apply(cn);
-            tm.Init(cn);
+            tm.Init(cn);//use connection for specified object to build to implement the algoarithm.
 
-            int[] previousActiveColumns = { 0 };
-            int[] activeColumns = { 1 };
-            Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) };
-            Cell expectedActiveCell = cn.GetCell(4);
+            int[] previousActiveColumns = { 0 };//1 PreActiveCell Column.
+            int[] activeColumns = { 1 };//1 Active Column.
+            Cell[] previousActiveCells = { cn.GetCell(0), cn.GetCell(1), cn.GetCell(2), cn.GetCell(3) };//4 PreviousActiveCells.
+            Cell expectedActiveCell = cn.GetCell(4);//Obtained cell 4 by calling connection method.
             List<Cell> expectedActiveCells = new List<Cell>(new Cell[] { expectedActiveCell });
             Cell otherBurstingCell = cn.GetCell(5);
 
-            DistalDendrite activeSegment = cn.CreateDistalSegment(expectedActiveCell);
-            cn.CreateSynapse(activeSegment, previousActiveCells[0], 0.5);
-            cn.CreateSynapse(activeSegment, previousActiveCells[1], 0.5);
-            cn.CreateSynapse(activeSegment, previousActiveCells[2], 0.5);
-            cn.CreateSynapse(activeSegment, previousActiveCells[3], 0.5);
+            DistalDendrite activeSegment = cn.CreateDistalSegment(expectedActiveCell);//Created a Distal dendrite segment of a cell.
+            cn.CreateSynapse(activeSegment, previousActiveCells[0], 0.5);//Created a synapse on a distal segment of a cell index 0.
+            cn.CreateSynapse(activeSegment, previousActiveCells[1], 0.5);//Created a synapse on a distal segment of a cell index 0.
+            cn.CreateSynapse(activeSegment, previousActiveCells[2], 0.5);//Created a synapse on a distal segment of a cell index 0.
+            cn.CreateSynapse(activeSegment, previousActiveCells[3], 0.5);//Created a synapse on a distal segment of a cell index 0.
 
             DistalDendrite matchingSegmentOnSameCell = cn.CreateDistalSegment(expectedActiveCell);
-            Synapse s1 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[0], 0.3);
-            Synapse s2 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[1], 0.3);
+            Synapse s1 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[0], 0.3);//Matching Segment from previously Active Column on same cell(0).
+            Synapse s2 = cn.CreateSynapse(matchingSegmentOnSameCell, previousActiveCells[1], 0.3);//Matching Segment from previously Active Column on same cell(1).
 
             DistalDendrite matchingSegmentOnOtherCell = cn.CreateDistalSegment(otherBurstingCell);
-            Synapse s3 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[0], 0.3);
-            Synapse s4 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[1], 0.3);
+            Synapse s3 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[0], 0.3); //Matching Segment from previously Active Column on other cell(0).
+            Synapse s4 = cn.CreateSynapse(matchingSegmentOnOtherCell, previousActiveCells[1], 0.3); //Matching Segment from previously Active Column on same cell(1.
 
-            ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;
-            Assert.IsTrue(cc.PredictiveCells.SequenceEqual(expectedActiveCells));
-            tm.Compute(activeColumns, true);
+            ComputeCycle cc = tm.Compute(previousActiveColumns, true) as ComputeCycle;//Learn=True
+            Assert.IsTrue(cc.PredictiveCells.SequenceEqual(expectedActiveCells));//Predicting Expected Active Cells.
+            tm.Compute(activeColumns, true);//Learn=True, Computing Active columns. 
 
-            Assert.AreEqual(0.3, s1.Permanence, 0.01);
-            Assert.AreEqual(0.3, s2.Permanence, 0.01);
-            Assert.AreEqual(0.3, s3.Permanence, 0.01);
-            Assert.AreEqual(0.3, s4.Permanence, 0.01);
+            Assert.AreEqual(0.3, s1.Permanence, 0.01);///Asserting the value for Segment1.
+            Assert.AreEqual(0.3, s2.Permanence, 0.01);///Asserting the value for Segment2.
+            Assert.AreEqual(0.3, s3.Permanence, 0.01);///Asserting the value for Segment3.
+            Assert.AreEqual(0.3, s4.Permanence, 0.01);///Asserting the value for Segment4.
         }
 
 
 
         /// <summary>
-        ///Test a  LinkedHashSet{T}  containing the Cell specified by the passed in indexes
+        ///Test a  LinkedHashSet{T}  containing the Cell specified by the passed in indexes.
         /// </summary>
         [TestMethod]
         public void TestBurstpredictedColumns()
@@ -230,12 +227,12 @@ namespace UnitTestsProject
             Connections cn = new Connections();
             Parameters p = getDefaultParameters();
             p.apply(cn);
-            tm.Init(cn);
+            tm.Init(cn);//use connection for specified object to build to implement the algoarithm.
 
-            int[] activeColumns = { 1 }; //Cureently Active column
-            IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); //Number of Cell Indexs
+            int[] activeColumns = { 1 }; //Currently Active column.
+            IList<Cell> burstingCells = cn.GetCellSet(new int[] { 0, 1, 2, 3 }); //Number of Cell Indexs.
 
-            ComputeCycle cc = tm.Compute(activeColumns, false) as ComputeCycle; //COmpute class object 
+            ComputeCycle cc = tm.Compute(activeColumns, false) as ComputeCycle; //Computing class object.
 
             Assert.IsFalse(cc.ActiveCells.SequenceEqual(burstingCells));
         }
