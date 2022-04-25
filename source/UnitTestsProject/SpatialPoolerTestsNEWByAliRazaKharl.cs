@@ -177,9 +177,9 @@ namespace  UnitTestsProject
         public void testCompute2_1()
         {
             setupParameters();
-            parameters.setInputDimensions(new int[] { 10 });
-            parameters.setColumnDimensions(new int[] { 10 });
-            parameters.setPotentialRadius(3);
+            parameters.setInputDimensions(new int[] { 10 }); /// input dimension set to 10
+            parameters.setColumnDimensions(new int[] { 10 }); /// column dimension set to 10
+            parameters.setPotentialRadius(3); ///
             parameters.setPotentialPct(0.3);
             parameters.setGlobalInhibition(false);
             parameters.setLocalAreaDensity(-1.0);
@@ -201,9 +201,9 @@ namespace  UnitTestsProject
             SpatialPoolerMock mock = new SpatialPoolerMock(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }); //10 inhibit columns
             mock.Init(mem);
 
-            int[] inputVector = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }; //
-            int[] activeArray = new int[] { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 };
-            for (int i = 0; i < 20; i++)
+            int[] inputVector = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }; /// assign the values of input dimension
+            int[] activeArray = new int[] { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }; /// assign the values of output dimension
+            for (int i = 0; i < 20; i++) 
             {
                 mock.compute(inputVector, activeArray, true); //updates the permanences value
             }
@@ -212,7 +212,7 @@ namespace  UnitTestsProject
             {
                 int[] permanences = ArrayUtils.ToIntArray(mem.GetColumn(i).ProximalDendrite.RFPool.GetDensePermanences(mem.HtmConfig.NumInputs));
                 //int[] potential = (int[])mem.getConnectedCounts().getSlice(i);
-                int[] potential = (int[])mem.GetColumn(i).ConnectedInputBits;
+                int[] potential = (int[])mem.GetColumn(i).ConnectedInputBits; /// connected input bits from Column
                 Assert.IsTrue(permanences.SequenceEqual(potential));
             } 
         }
@@ -243,11 +243,16 @@ namespace  UnitTestsProject
             SpatialPooler sp = new SpatialPooler();
             sp.Init(cn);
 
-            int[] activeArray = new int[nColumns];
-            sp.compute(new int[inputSize], activeArray, true);
+            int[] activeArray = new int[nColumns]; 
+            sp.compute(new int[inputSize], activeArray, true); /// learn active array from input
 
             Assert.IsFalse(10 == activeArray.Count(i => i > 0));//, ArrayUtils.INT_GREATER_THAN_0).length);
         }
+        /// <summary>
+        ///  When there is no overlaping stimulus threshold in a global inhibition is to return a number 
+        ///  that represt how many elements which cannot return a specified sequence
+        /// </summary>
+        /// <param name="poolerMode"></param>
         [TestMethod]
         [DataRow(PoolerMode.SingleThreaded)]
         [DataRow(PoolerMode.Multicore)]
